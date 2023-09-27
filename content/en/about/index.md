@@ -1,12 +1,12 @@
 ---
-title: About Goldydocs
+title: About PersonalMediaVault
 linkTitle: About
 menu: {main: {weight: 10}}
 ---
 
-{{% blocks/cover title="About Goldydocs" image_anchor="bottom" height="auto" %}}
+{{% blocks/cover title="About PersonalMediaVault" image_anchor="bottom" height="auto" %}}
 
-A sample site using the Docsy Hugo theme.
+Web application to store media files (video, audio and pictures) in an encrypted storage, and visualize them using a web browser.
 {.mt-5}
 
 {{% /blocks/cover %}}
