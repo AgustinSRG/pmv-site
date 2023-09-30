@@ -5,30 +5,27 @@ tags: [download, install, guides]
 weight: 2
 ---
 
-{{% pageinfo %}}
-This is a placeholder page that shows you how to use this template site.
-{{% /pageinfo %}}
+In this section we explain how to download, install and run PersonalMediaVault for the first time.
 
-Information in this section helps your user try your project themselves.
+## Download
 
-* What do your users need to do to start using your project? This could include downloading/installation instructions, including any prerequisites or system requirements.
+Check out the [Releases](https://github.com/AgustinSRG/PersonalMediaVault/releases) section on GitHub to find pre-compiled installation packages.
 
-* Introductory “Hello World” example, if appropriate. More complex tutorials should live in the Tutorials section.
+If you do not find installation packages for your system, you can:
 
-Consider using the headings below for your getting started page. You can delete any that are not applicable to your project.
-
-## Prerequisites
-
-Are there any system requirements for using your project? What languages are supported (if any)? Do users need to already have any software or tools installed?
+ - [Compile it from source code](./compile/)
+ - [Run it with Docker](./docker/)
 
 ## Installation
 
-Where can your user find your project code? How can they install it (binaries, installable package, build from source)? Are there multiple options/versions they can install and how should they choose the right one for them?
+Depending on your operating system, we offer you the following installation guides:
 
-## Setup
+ - [Installation on Linux](./install-linux-deb/)
+ - [Installation on Windows](./install-windows/)
 
-Is there any initial setup users need to do after installation to try your project?
+The installation guides also explain how to create a vault and run it in your system.
 
-## Try it out!
+## Next steps
 
-Can your users test their installation, for example by running a command or deploying a Hello World example?
+After installing and creating your first vault, you may want to check out the [Tutorials](/docs/tutorials/) section for more guides and tutorial on how to use PersonalMediaVault.
+

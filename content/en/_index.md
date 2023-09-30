@@ -113,13 +113,13 @@ The web interface has very small bundle sizes.
 Multiple caches are in place to further reduce latency.
 {{% /blocks/feature %}}
 
-{{% blocks/feature icon="fab fa-docker" title="Docker" %}}
+{{% blocks/feature icon="fab fa-docker" title="Docker" url="/docs/getting-started/docker/" %}}
 PersonalMediaVault provides a Docker image, so you can easily run a server in the cloud without worrying about dependencies or installations.
 
 You can find the images both on [Docker Hub](https://hub.docker.com/r/asanrom/pmv) and in [GitHub Packages](https://github.com/AgustinSRG/PersonalMediaVault/pkgs/container/personalmediavault).
 {{% /blocks/feature %}}
 
-{{% blocks/feature icon="fas fa-terminal" title="Console client" url="https://github.com/AgustinSRG/pmv-cli" %}}
+{{% blocks/feature icon="fas fa-terminal" title="Console client" url="/docs/console-client/" %}}
 PersonalMediaVault provides a command line interface client for PersonalMediaVault,
 so you can access your vault even from a terminal.
 
@@ -137,7 +137,7 @@ PersonalMediaVault is a free and open source project
 
 {{% blocks/section type="row" %}}
 
-{{% blocks/feature icon="fas fa-scale-balanced" title="Mit License" %}}
+{{% blocks/feature icon="fas fa-scale-balanced" title="MIT License" %}}
 The project is under the [MIT License](https://github.com/AgustinSRG/PersonalMediaVault/blob/master/LICENSE).
 
 You can freely distribute the project, make any changes or even use for commercial purposes
