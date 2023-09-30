@@ -1,7 +1,7 @@
 ---
-title: Overview
-description: What is PersonalMediaVault?
-weight: 1
+title: Technical Documentation
+description: Documentation about how PersonalMediaVault works.
+weight: 4
 ---
 
 PersonalMediaVault is an open source tool you can use to create an encrypted, easy to backup and easy to access media gallery.

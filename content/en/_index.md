@@ -63,7 +63,7 @@ Each kind of media has its own player interface, with both generic and specific 
 {{% /blocks/feature %}}
 
 {{% blocks/feature icon="fas fa-tags" title="Classify your media files with tags" %}}
-You can given each media file a title, description and classify it with tags.
+You can give each media file a title, description and classify it with tags.
 
 You can then make searches using those parameters to easily find your media files.
 {{% /blocks/feature %}}
@@ -119,7 +119,7 @@ PersonalMediaVault provides a Docker image, so you can easily run a server in th
 You can find the images both on [Docker Hub](https://hub.docker.com/r/asanrom/pmv) and in [GitHub Packages](https://github.com/AgustinSRG/PersonalMediaVault/pkgs/container/personalmediavault).
 {{% /blocks/feature %}}
 
-{{% blocks/feature icon="fas fa-terminal" title="CLI client" url="https://github.com/AgustinSRG/pmv-cli" %}}
+{{% blocks/feature icon="fas fa-terminal" title="Console client" url="https://github.com/AgustinSRG/pmv-cli" %}}
 PersonalMediaVault provides a command line interface client for PersonalMediaVault,
 so you can access your vault even from a terminal.
 

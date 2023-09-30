@@ -1,8 +1,8 @@
 ---
 title: Tutorials
-description: Show your user how to work through some end to end examples.
-date: 2017-01-04
-weight: 8
+description: Check out some guides and tutorials on how to use PersonalMediaVault.
+tags: [guides, tutorials]
+weight: 3
 ---
 
 {{% pageinfo %}}

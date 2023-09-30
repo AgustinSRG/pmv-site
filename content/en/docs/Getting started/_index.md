@@ -1,8 +1,7 @@
 ---
 title: Getting Started
-description: What does your user need to know to try your project?
-categories: [Examples, Placeholders]
-tags: [test, docs]
+description: Download, install and run PersonalMediaVault
+tags: [download, install, guides]
 weight: 2
 ---
 
