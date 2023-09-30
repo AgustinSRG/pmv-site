@@ -7,4 +7,6 @@ Add styles or override variables from the theme here.
 .container.td-overlay__inner {
     background-color: rgba(0, 0, 0, 0.8);
     border-radius: 32px;
+    padding-top: 16px !important;
+    padding-bottom: 16px !important;
 }

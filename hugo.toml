@@ -192,12 +192,6 @@ enable = true
     url = "https://github.com/AgustinSRG/PersonalMediaVault"
     pre = "<i class='fab fa-github'></i>"
 
-  [[menu.main]]
-    name = "Downloads"
-    weight = 60
-    url = "https://github.com/AgustinSRG/PersonalMediaVault/releases"
-    pre = "<i class='fas fa-download'></i>"
-
 # hugo module configuration
 
 [module]
