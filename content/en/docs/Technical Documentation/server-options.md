@@ -2,8 +2,8 @@
 title: Server Options
 description: >
   List of available server options
-categories: [Guides, Configuration]
-tags: [guides, configuration, server]
+categories: [Guides, Configuration, Technical]
+tags: [guides, configuration, server, technical, documentation]
 ---
 
 This is a list of all available server options for the PersonalMediaVault backend.

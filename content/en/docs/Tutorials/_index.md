@@ -1,13 +1,14 @@
 ---
 title: Tutorials
 description: Check out some guides and tutorials on how to use PersonalMediaVault.
-tags: [guides, tutorials]
+categories: [Tutorials]
+tags: [tutorials]
 weight: 3
 ---
 
-{{% pageinfo %}}
-This is a placeholder page that shows you how to use this template site.
-{{% /pageinfo %}}
+This section contains tutorials on varios aspects of PersonalMediaVault.
 
-Tutorials are **complete worked examples** made up of **multiple tasks** that guide the user through a relatively simple but realistic scenario: building an application that uses some of your project’s features, for example. If you have already created some Examples for your project you can base Tutorials on them. This section is **optional**. However, remember that although you may not need this section at first, having tutorials can be useful to help your users engage with your example code, especially if there are aspects that need more explanation than you can easily provide in code comments.
+Check the list below in order to find what you are looking for.
+
+If you can't find what you're looking for, feel free to start a [discussion on GitHub](https://github.com/AgustinSRG/PersonalMediaVault/discussions).
 

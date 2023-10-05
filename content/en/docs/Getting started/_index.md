@@ -1,7 +1,8 @@
 ---
 title: Getting Started
 description: Download, install and run PersonalMediaVault
-tags: [download, install, guides]
+categories: [Guides, Installation]
+tags: [guides, installation]
 weight: 2
 ---
 

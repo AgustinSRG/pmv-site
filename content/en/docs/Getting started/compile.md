@@ -2,8 +2,8 @@
 title: Compile from source code
 description: >
   Guide on how to compile PersonalMediaVault from source code
-categories: [Guides, Installation]
-tags: [guides, installation]
+categories: [Guides, Installation, Technical]
+tags: [guides, installation, technical, compilation]
 ---
 
 This guide explains how to compile PersonalMediaVault from source code.

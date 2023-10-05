@@ -36,7 +36,7 @@ Read the [Docsy documentation](https://www.docsy.dev/docs/) for more information
 In order to build the website, run the following command:
 
 ```sh
-npm run build
+npm run build:production
 ```
 
 The website will be placed in the `public` folder.

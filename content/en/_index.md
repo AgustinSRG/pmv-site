@@ -45,7 +45,7 @@ without worrying your files being accessed, since they are encrypted.
 {{% /blocks/feature %}}
 
 
-{{% blocks/feature icon="fab fa-firefox-browser" title="Access your vault with a web browser" %}}
+{{% blocks/feature icon="fab fa-chrome" title="Access your vault with a web browser" %}}
 PersonalMediaVault is implemented as a web application. You can run the server in local, 
 or in a security-hardened server depending on your needs.
 

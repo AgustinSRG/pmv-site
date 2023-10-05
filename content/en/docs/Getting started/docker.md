@@ -2,8 +2,8 @@
 title: Run with Docker
 description: >
   Guide on how to run PersonalMediaVault with Docker
-categories: [Guides, Installation]
-tags: [guides, installation, docker]
+categories: [Guides, Installation, Technical]
+tags: [guides, installation, technical, docker]
 ---
 
 This guide explains how to run PersonalMediaVault with Docker.
