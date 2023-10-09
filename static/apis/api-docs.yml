@@ -1,0 +1,2430 @@
+swagger: "2.0"
+info:
+  title: PersonalMediaVault Backend API
+  description: API to access PersonalMediaVault from a web client.
+  version: 1.12.2
+
+schemes:
+  - http
+  - https
+  
+securityDefinitions:
+  SessionTokenHeader:
+    type: apiKey
+    in: header
+    name: x-session-token
+  
+tags:
+  - name: auth
+    description: Authentication API (Login / Logout API)
+  - name: account
+    description: Account management API
+  - name: admin
+    description: Account administration API
+  - name: media
+    description: Media API. Allows user to upload media assets, get them, modify them or delete them.
+  - name: tags
+    description: Tags API. Allows user to organize media using tags.
+  - name: search
+    description: Search API. Allows user to search for media assets.
+  - name: albums
+    description: Albums API. Allows user to create sorted collections of media assets.
+  - name: config
+    description: Server-side user configuration management
+  - name: tasks
+    description: Tasks API. Allows user to check the progress of running tasks
+  
+
+paths:
+  "/api/auth/login":
+    post:
+      summary: Login API
+      description: Creates an active session from a set of credentials (user + password)
+      tags:
+        - auth
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: credentials
+          schema:
+            properties:
+              username:
+                type: string
+                description: Media vault username (can't be blank, max 255 chars)
+                example: admin
+              password:
+                type: string
+                description: Media vault password (can't be blank, max 255 chars)
+                example: password
+      responses:
+        400:
+          description: Bad request (if the password given is blank, for example)
+        403:
+          description: Login request denied
+          schema:
+            properties:
+              code:
+                type: string
+                description: >
+                  Error code:
+                    * INVALID_CREDENTIALS - Invalid user or password
+                    * COOLDOWN - When you fail a login request, there is a cooldown of 5 seconds.
+                enum:
+                  - INVALID_CREDENTIALS
+                  - COOLDOWN
+              message:
+                type: string
+                description: "Error message"
+                example: "Error message"
+        200:
+          description: Login request accepted
+          schema:
+            properties:
+              session_id:
+                type: string
+                description: "Session ID. Set a cookie named 'x-session-token' with that value. Sessions expire when you log out or after 24 hours."
+              vault_fingerprint:
+                type: string
+                description: "Vault fingerprint"
+                
+  "/api/auth/logout":
+    post:
+      summary: Logout API
+      description: Deletes the current active session
+      tags:
+        - auth
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters: []
+      security:
+        - SessionTokenHeader: []
+      responses:
+        401:
+          description: Unauthorized (No valid session)
+        200:
+          description: Success
+          
+  "/api/account":
+    get:
+      summary: Get account context
+      description: Gets the account context for the current session
+      tags:
+        - account
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters: []
+      security:
+        - SessionTokenHeader: []
+      responses:
+        401:
+          description: Unauthorized (No valid session)
+        200:
+          description: Username
+          schema:
+            properties:
+              username:
+                type: string
+                description: Username
+                example: "admin"
+              title:
+                type: string
+                description: "Custom title for the vault"
+              css:
+                type: string
+                description: "Custom style for the vault"
+              version:
+                type: string
+                description: "Server version"
+              root:
+                type: boolean
+                description: "True if the user has root access to the vault"
+              write:
+                type: boolean
+                description: "True if the user has write access to the vault"
+  "/api/account/username":
+    post:
+      summary: Change username
+      description: Changes the username for the vault credentials
+      tags:
+        - account
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: credentials
+          schema:
+            properties:
+              username:
+                type: string
+                description: Media vault NEW username (can't be blank, max 255 chars)
+                example: admin
+              password:
+                type: string
+                description: Media vault password (can't be blank, max 255 chars)
+                example: password
+      security:
+        - SessionTokenHeader: []
+      responses:
+        400:
+          description: Bad request.
+          schema:
+            properties:
+              code:
+                type: string
+                description: >
+                  Error code:
+                    * USERNAME_INVALID - Invalid username
+                    * USERNAME_IN_USE - There si already another user with the same username
+                enum:
+                  - USERNAME_INVALID
+                  - USERNAME_IN_USE
+              message:
+                type: string
+                description: "Error message"
+                example: "Error message"
+        401:
+          description: Unauthorized (No valid session)
+        403:
+          description: Invalid password or acess denied (if not root)
+        200:
+          description: Success   
+          
+  "/api/account/password":
+    post:
+      summary: Change password
+      description: Changes the password for the vault credentials
+      tags:
+        - account
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: credentials
+          schema:
+            properties:
+              old_password:
+                type: string
+                description: Media vault password (can't be blank, max 255 chars)
+                example: password-old
+              password:
+                type: string
+                description: Media vault NEW password (can't be blank, max 255 chars)
+                example: password
+      security:
+        - SessionTokenHeader: []
+      responses:
+        400:
+          description: Bad request. (Invalid new password)
+        401:
+          description: Unauthorized (No valid session)
+        403:
+          description: Invalid password.
+        200:
+          description: Success
+          
+  "/api/upload":
+    post:
+      summary: Upload media
+      description: Uploads a media asset
+      tags:
+        - media
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: "title"
+          type: string
+          description: "Title for the media. If not provided, file name is used."
+        - in: query
+          name: "album"
+          type: number
+          description: "Album ID where the uploaded media will be added."
+        - in: formData
+          name: file
+          type: file
+          description: The file to upload.
+      security:
+        - SessionTokenHeader: []
+      responses:
+        400:
+          description: Bad request.
+          schema:
+            properties:
+              code:
+                type: string
+                description: >
+                  Error code:
+                    * INVALID_MEDIA - Invalid media file provided
+                enum:
+                  - INVALID_MEDIA
+              message:
+                type: string
+                description: "Error message"
+                example: "Error message"
+        401:
+          description: Unauthorized (No valid session)
+        200:
+          description: Success
+          schema:
+            properties:
+              media_id:
+                type: number
+                format: int64
+                description: ID for the media asset just created.
+          
+  "/api/media/{id}":
+    get:
+      summary: Gets media
+      description: Gets media asset metadata
+      tags:
+        - media
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: number
+          format: int64
+          description: Media ID
+      security:
+        - SessionTokenHeader: []
+      responses:
+        401:
+          description: Unauthorized (No valid session)
+        404:
+          description: Not found
+        200:
+          description: Ok
+          schema:
+            properties:
+              id:
+                type: number
+                format: int64
+                description: Media ID
+              type:
+                type: number
+                format: int32
+                description: >
+                  Media Type:
+                    * 1 - Image
+                    * 2 - Video
+                    * 3 - Audio
+                enum:
+                  - 1
+                  - 2
+                  - 3
+              title:
+                type: string
+                description: "Media title"
+                example: "Media title"
+              description:
+                type: string
+                description: "Media description"
+                example: "Media description"
+              tags:
+                type: array
+                description: Associated tags
+                items:
+                  type: number
+                  format: int64
+                  description: Tag ID
+              upload_time:
+                type: number
+                format: int64
+                description: "Upload timestamp (server time, Unix milliseconds)"
+              thumbnail:
+                type: string
+                description: "Path to reach the thumbnail. Empty if no thumbnail. Thumnails are squared images."
+                example: "/assets/b/0/0/thumbnail.jpg"
+              duration:
+                type: number
+                format: double
+                description: Duration of the media in seconds (videos and audios)
+              width:
+                type: number
+                format: int32
+                description: Image/Video width
+              height:
+                type: number
+                format: int32
+                description: Image/Video height
+              fps:
+                type: number
+                format: int32
+                description: Frames per second
+              ready:
+                type: boolean
+                description: "Set to true if the media asset finish uploading"
+              ready_p:
+                type: number
+                format: int32
+                description: "Number from 0 to 100 in case ready = false to indicate the storage progress"
+              encoded:
+                type: boolean
+                description: "Set to true if the media asset is encoded and ready to play."
+              task:
+                type: number
+                format: int64
+                description: "Task ID in case encoded = false"
+              url:
+                type: string
+                description: "URL of the asset to be displayed. Blank if not encoded yet."
+                example: "/assets/b/0/0/video.mp4"
+              video_previews:
+                type: string
+                description: "URL of the video previews (frames each X seconds). Replace {INDEX} with a number starting from 0 for the first one."
+                example: "/assets/p/0/0/preview_{INDEX}.jpg"
+              video_previews_interval:
+                type: number
+                format: doiuble
+                description: Interval for each video preview, in seconds.
+              resolutions:
+                type: array
+                description: Extra resolutions for slow connections or small screens.
+                items:
+                  properties:
+                    width:
+                      type: number
+                      format: int32
+                      description: Image/Video width
+                    height:
+                      type: number
+                      format: int32
+                      description: Image/Video height
+                    fps:
+                      type: number
+                      format: int32
+                      description: Frames per second
+                    ready:
+                      type: boolean
+                      description: "If set to true, the resolution is encoded and ready for playback"
+                    task:
+                      type: number
+                      format: int64
+                      description: "Encoding task ID if ready = false"
+                    url:
+                      type: string
+                      description: "Playback URL"
+                      example: "/assets/b/0/0/video_720p.mp4"
+              subtitles:
+                type: array
+                description: Available subtitles for media
+                items:
+                  properties:
+                    id:
+                      type: string
+                      description: "Subtitles ID"
+                      example: "es"
+                    name:
+                      type: string
+                      description: "Subtitles name"
+                      example: "Spanish"
+                    url:
+                      type: string
+                      description: "SRT file URL"
+                      example: "/assets/b/0/0/subrip.srt"
+              audios:
+                type: array
+                description: Available extra audios (for videos)
+                items:
+                  properties:
+                    id:
+                      type: string
+                      description: "Audio track ID"
+                      example: "es"
+                    name:
+                      type: string
+                      description: "Audio track name"
+                      example: "Spanish"
+                    url:
+                      type: string
+                      description: "Audio file URL"
+                      example: "/assets/b/0/0/audio.mp3"
+              attachments:
+                type: array
+                description: Available attachments
+                items:
+                  properties:
+                    id:
+                      type: number
+                      format: int64
+                      description: "Attachment ID"
+                    name:
+                      type: string
+                      description: "Attachment file name"
+                      example: "example.txt"
+                    size:
+                      type: number
+                      format: int64
+                      description: "Size of the attachment in bytes"
+                    url:
+                      type: string
+                      description: "Attachment file URL"
+                      example: "/assets/b/0/0/example.txt"
+              force_start_beginning:
+                type: boolean
+                description: "True to indicate clients that this media cannot save it's time status (for songs / short anims)"
+              img_notes:
+                type: boolean
+                description: "True if the image has notes"
+              img_notes_url:
+                type: string
+                description: "URL to fetch the image notes from"
+                example: "/assets/b/0/0/notes.json"
+              ext_desc_url:
+                type: string
+                description: "URL to fetch the extended description from. Empty if no extended description."
+                example: "/assets/b/0/0/ext_desc.txt"
+              time_slices:
+                type: array
+                description: "Timeline splits, for videos and audios"
+                items:
+                  properties:
+                    time:
+                      type: number
+                      format: double
+                      description: "Start of the time slice, in seconds"
+                    name:
+                      type: string
+                      description: "Name of the time slice"
+                
+  "/api/media/{id}/albums":
+    get:
+      summary: Gets media albums list
+      description: Gets media albums list
+      tags:
+        - media
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: number
+          format: int64
+          description: Media ID
+      security:
+        - SessionTokenHeader: []
+      responses:
+        401:
+          description: Unauthorized (No valid session)
+        404:
+          description: Not found
+        200:
+          description: Albums list
+          schema:
+            type: array
+            items:
+              type: number
+              format: int64
+              description: Album ID
+              
+  "/api/media/{id}/size_stats":
+    get:
+      summary: Gets the size stats of a media asset
+      description: Gets the size stats of a media asset
+      tags:
+        - media
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: number
+          format: int64
+          description: Media ID
+      security:
+        - SessionTokenHeader: []
+      responses:
+        401:
+          description: Unauthorized (No valid session)
+        404:
+          description: Not found
+        200:
+          description: Size stats
+          schema:
+            properties:
+              meta_size:
+                type: number
+                format: int64
+                description: "Size of the metadata (In bytes)"
+              assets:
+                type: array
+                description: "Stats of the assets"
+                items:
+                  properties:
+                    id:
+                      type: number
+                      format: int64
+                      description: "Asset ID"
+                    type:
+                      type: string
+                      enum:
+                        - s
+                        - m
+                      description: "Type of asset. Can be 's' (Single file) or 'm' (Multi file)"
+                    name:
+                      type: string
+                      description: "Descriptive name of the asset"
+                      example: "ORIGINAL"
+                    size:
+                      type: number
+                      format: int64
+                      description: "Asset size (Bytes)"
+  
+  "/api/media/{id}/edit/title":
+    post:
+      summary: Changes media title.
+      description: Changes the title for a media asset.
+      tags:
+        - media
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: number
+          format: int64
+          description: Media ID
+        - in: body
+          name: title
+          schema:
+            properties:
+              title:
+                type: string
+                description: Media title (can't be blank, max 255 chars)
+                example: New Media title
+      security:
+        - SessionTokenHeader: []
+      responses:
+        400:
+          description: Bad request.
+          schema:
+            properties:
+              code:
+                type: string
+                description: >
+                  Error code:
+                    * INVALID_TITLE - Invalid media title provided
+                enum:
+                  - INVALID_TITLE
+              message:
+                type: string
+                description: "Error message"
+                example: "Error message"
+        401:
+          description: Unauthorized (No valid session)
+        404:
+          description: Not found
+        200:
+          description: Success
+          
+          
+  "/api/media/{id}/edit/description":
+    post:
+      summary: Changes media description.
+      description: Changes the description for a media asset.
+      tags:
+        - media
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: number
+          format: int64
+          description: Media ID
+        - in: body
+          name: description
+          schema:
+            properties:
+              description:
+                type: string
+                description: Media description (max 5 MB)
+                example: New Media description
+      security:
+        - SessionTokenHeader: []
+      responses:
+        400:
+          description: Bad request.
+          schema:
+            properties:
+              code:
+                type: string
+                description: >
+                  Error code:
+                    * INVALID_DESCRIPTION - Invalid media description provided
+                enum:
+                  - INVALID_DESCRIPTION
+              message:
+                type: string
+                description: "Error message"
+                example: "Error message"
+        401:
+          description: Unauthorized (No valid session)
+        404:
+          description: Not found
+        200:
+          description: Success
+          
+  "/api/media/{id}/edit/extra":
+    post:
+      summary: Changes media extra params.
+      description: Changes media extra params.
+      tags:
+        - media
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: number
+          format: int64
+          description: Media ID
+        - in: body
+          name: configuration
+          schema:
+            properties:
+              force_start_beginning:
+                type: boolean
+                description: "True to indicate clients that this media cannot save it's time status (for songs / short anims)"
+      security:
+        - SessionTokenHeader: []
+      responses:
+        400:
+          description: Bad request.
+        401:
+          description: Unauthorized (No valid session)
+        404:
+          description: Not found
+        200:
+          description: Success
+          
+  "/api/media/{id}/edit/time_slices":
+    post:
+      summary: Modifies timeline slices.
+      description: Modifies timeline slices.
+      tags:
+        - media
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: number
+          format: int64
+          description: Media ID
+        - in: body
+          name: configuration
+          schema:
+             type: array
+             description: "Timeline splits, for videos and audios"
+             items:
+                properties:
+                  time:
+                    type: number
+                    format: double
+                    description: "Start of the time slice, in seconds"
+                  name:
+                    type: string
+                    description: "Name of the time slice"
+      security:
+        - SessionTokenHeader: []
+      responses:
+        400:
+          description: Bad request.
+        401:
+          description: Unauthorized (No valid session)
+        404:
+          description: Not found
+        200:
+          description: Success
+  
+  "/api/media/{id}/edit/notes":
+    post:
+      summary: Sets the image notes.
+      description: Updates the image notes file for a media asset.
+      tags:
+        - media
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: number
+          format: int64
+          description: Media ID
+        - in: body
+          name: array of notes
+          schema:
+            type: array
+            items:
+              properties:
+                x:
+                  type: number
+                  format: int32
+                  description: "X Coordinate of the notes"
+                y:
+                  type: number
+                  format: int32
+                  description: "Y Coordinate of the notes"
+                w:
+                  type: number
+                  format: int32
+                  description: "Width of the notes"
+                h:
+                  type: number
+                  format: int32
+                  description: "Height of the notes"
+                text:
+                  type: string
+                  description: "Text of the notes"
+      security:
+        - SessionTokenHeader: []
+      responses:
+        400:
+          description: Bad request.
+        401:
+          description: Unauthorized (No valid session)
+        404:
+          description: Not found
+        200:
+          description: Success
+
+  "/api/media/{id}/edit/ext_desc":
+    post:
+      summary: Sets the extended description.
+      description: Updates the extended description file for a media asset.
+      tags:
+        - media
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: number
+          format: int64
+          description: Media ID
+        - in: body
+          name: array of notes
+          schema:
+            properties:
+              ext_desc:
+                type: string
+                description: "Extended description to store"
+      security:
+        - SessionTokenHeader: []
+      responses:
+        400:
+          description: Bad request.
+        401:
+          description: Unauthorized (No valid session)
+        404:
+          description: Not found
+        200:
+          description: Success
+          
+  "/api/media/{id}/edit/thumbnail":
+    post:
+      summary: Changes media thumbnail.
+      description: Changes the thumbnail for a media asset.
+      tags:
+        - media
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: number
+          format: int64
+          description: Media ID
+        - in: formData
+          name: file
+          type: file
+          description: The file to upload.
+      security:
+        - SessionTokenHeader: []
+      responses:
+        400:
+          description: Bad request.
+          schema:
+            properties:
+              code:
+                type: string
+                description: >
+                  Error code:
+                    * INVALID_THUMBNAIL - Invalid image file provided
+                enum:
+                  - INVALID_THUMBNAIL
+              message:
+                type: string
+                description: "Error message"
+                example: "Error message"
+        401:
+          description: Unauthorized (No valid session)
+        404:
+          description: Not found
+        200:
+          description: Success
+          schema:
+            properties:
+              url:
+                type: string
+                description: "New thumbnail URL"
+                example: "/assets/b/0/0/thumbnail.jpg"
+  
+  "/api/media/{id}/encode":
+    post:
+      summary: Encodes missing files
+      description: Spawns tasks for any encoding thats missing (due to crash / unexpected power down)
+      tags:
+        - media
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: number
+          format: int64
+          description: Media ID
+      security:
+        - SessionTokenHeader: []
+      responses:
+        401:
+          description: Unauthorized (No valid session)
+        404:
+          description: Not found
+        200:
+          description: Success
+          
+  "/api/media/{id}/delete":
+    post:
+      summary: Deletes media
+      description: Deletes media asset from the vault
+      tags:
+        - media
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: number
+          format: int64
+          description: Media ID
+      security:
+        - SessionTokenHeader: []
+      responses:
+        401:
+          description: Unauthorized (No valid session)
+        404:
+          description: Not found
+        200:
+          description: Success
+          
+  "/api/media/{id}/resolution/add":
+    post:
+      summary: Adds resolution
+      description: Adds resolution for the media asset. Spawns new encoding task.
+      tags:
+        - media
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: number
+          format: int64
+          description: Media ID
+        - in: body
+          name: description
+          schema:
+            properties:
+              width:
+                type: number
+                format: int32
+                description: Image/Video width
+              height:
+                type: number
+                format: int32
+                description: Image/Video height
+              fps:
+                type: number
+                format: int32
+                description: Frames per second
+      security:
+        - SessionTokenHeader: []
+      responses:
+        400:
+          description: Bad request.
+          schema:
+            properties:
+              code:
+                type: string
+                description: >
+                  Error code:
+                    * NOT_SUPPORTED - Resolutions are not supported for audio files
+                    * DUPLICATED_RESOLUTION - Duplicated resolution
+                enum:
+                  - NOT_SUPPORTED
+                  - DUPLICATED_RESOLUTION
+              message:
+                type: string
+                description: "Error message"
+                example: "Error message"
+        401:
+          description: Unauthorized (No valid session)
+        404:
+          description: Not found
+        200:
+          description: Success
+          schema:
+            properties:
+              width:
+                type: number
+                format: int32
+                description: Image/Video width
+              height:
+                type: number
+                format: int32
+                description: Image/Video height
+              fps:
+                type: number
+                format: int32
+                description: Frames per second
+              ready:
+                type: boolean
+                description: "If set to true, the resolution is encoded and ready for playback"
+              task:
+                type: number
+                format: int64
+                description: "Encoding task ID if ready = false"
+              url:
+                type: string
+                description: "Playback URL"
+                example: "/assets/b/0/0/video_720p.mp4"
+                
+                
+  "/api/media/{id}/resolution/remove":
+    post:
+      summary: Removes resolution
+      description: Removes resolution for the media asset.
+      tags:
+        - media
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: number
+          format: int64
+          description: Media ID
+        - in: body
+          name: description
+          schema:
+            properties:
+              width:
+                type: number
+                format: int32
+                description: Image/Video width
+              height:
+                type: number
+                format: int32
+                description: Image/Video height
+              fps:
+                type: number
+                format: int32
+                description: Frames per second
+      security:
+        - SessionTokenHeader: []
+      responses:
+        400:
+          description: Bad request.
+        401:
+          description: Unauthorized (No valid session)
+        404:
+          description: Not found
+        200:
+          description: Success
+          
+  "/api/media/{id}/subtitles/set":
+    post:
+      summary: Sets subtitles
+      description: Add a subtitles file for videos and audios
+      tags:
+        - media
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: number
+          format: int64
+          description: Media ID
+        - in: query
+          name: id
+          type: string
+          required: true
+          description: "ID for the subtitles. Example: es"
+        - in: query
+          name: name
+          type: string
+          required: true
+          description: "Name for the subtitles. Example: Spanish"
+        - in: formData
+          name: file
+          type: file
+          description: The file to upload.
+      security:
+        - SessionTokenHeader: []
+      responses:
+        400:
+          description: Bad request.
+          schema:
+            properties:
+              code:
+                type: string
+                description: >
+                  Error code:
+                    * INVALID_SRT - Invalid srt file provided
+                    * INVALID_ID - Invalid subtitles ID
+                    * INVALID_NAME - Invalid subtitles name
+                    * NOT_SUPPORTED - This API only applies to videos and audios
+                enum:
+                  - INVALID_SRT
+                  - INVALID_ID
+                  - INVALID_NAME
+                  - NOT_SUPPORTED
+              message:
+                type: string
+                description: "Error message"
+                example: "Error message"
+        401:
+          description: Unauthorized (No valid session)
+        404:
+          description: Not found
+        413:
+          description: SRT file too large (Max 10 MB)
+        200:
+          description: Success
+          schema:
+            properties:
+              id:
+                type: string
+                description: "Subtitles ID"
+                example: "es"
+              name:
+                type: string
+                description: "Subtitles name"
+                example: "Spanish"
+              url:
+                type: string
+                description: "SRT file URL"
+                example: "/assets/b/0/0/subrip.srt"
+  
+  "/api/media/{id}/subtitles/remove":
+    post:
+      summary: Removes subtitles
+      description: Removes subtitles
+      tags:
+        - media
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: number
+          format: int64
+          description: Media ID
+        - in: query
+          name: id
+          type: string
+          required: true
+          description: "ID for the subtitles. Example: es"
+      security:
+        - SessionTokenHeader: []
+      responses:
+        400:
+          description: Bad request.
+        401:
+          description: Unauthorized (No valid session)
+        404:
+          description: Not found
+        200:
+          description: Success
+
+  "/api/media/{id}/audios/set":
+    post:
+      summary: Sets audio track
+      description: Add an extra audio track to a video
+      tags:
+        - media
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: number
+          format: int64
+          description: Media ID
+        - in: query
+          name: id
+          type: string
+          required: true
+          description: "ID for the audio track. Example: es"
+        - in: query
+          name: name
+          type: string
+          required: true
+          description: "Name for the audio track. Example: Spanish"
+        - in: formData
+          name: file
+          type: file
+          description: The file to upload.
+      security:
+        - SessionTokenHeader: []
+      responses:
+        400:
+          description: Bad request.
+          schema:
+            properties:
+              code:
+                type: string
+                description: >
+                  Error code:
+                    * INVALID_AUDIO - Invalid audio file provided
+                    * INVALID_ID - Invalid track ID
+                    * INVALID_NAME - Invalid track name
+                    * NOT_SUPPORTED - This API only applies to videos
+                enum:
+                  - INVALID_AUDIO
+                  - INVALID_ID
+                  - INVALID_NAME
+                  - NOT_SUPPORTED
+              message:
+                type: string
+                description: "Error message"
+                example: "Error message"
+        401:
+          description: Unauthorized (No valid session)
+        404:
+          description: Not found
+        200:
+          description: Success
+          schema:
+            properties:
+              id:
+                type: string
+                description: "Audio track ID"
+                example: "es"
+              name:
+                type: string
+                description: "Audio track name"
+                example: "Spanish"
+              url:
+                type: string
+                description: "Audio file URL"
+                example: "/assets/b/0/0/audio.mp3"
+
+  "/api/media/{id}/audios/remove":
+    post:
+      summary: Removes audio track
+      description: Removes audio track
+      tags:
+        - media
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: number
+          format: int64
+          description: Media ID
+        - in: query
+          name: id
+          type: string
+          required: true
+          description: "ID of the audio track. Example: es"
+      security:
+        - SessionTokenHeader: []
+      responses:
+        400:
+          description: Bad request.
+        401:
+          description: Unauthorized (No valid session)
+        404:
+          description: Not found
+        200:
+          description: Success
+  
+  "/api/media/{id}/attachments/add":
+    post:
+      summary: Adds attachment
+      description: Add an attachment to the media asset
+      tags:
+        - media
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: number
+          format: int64
+          description: Media ID
+        - in: formData
+          name: file
+          type: file
+          description: The file to upload.
+      security:
+        - SessionTokenHeader: []
+      responses:
+        400:
+          description: Bad request.
+        401:
+          description: Unauthorized (No valid session)
+        404:
+          description: Not found
+        200:
+          description: Success
+          schema:
+            properties:
+              id:
+                type: number
+                format: int64
+                description: "Attachment ID"
+              name:
+                type: string
+                description: "Attachment file name"
+                example: "example.txt"
+              size:
+                type: number
+                format: int64
+                description: "Size of the attachment in bytes"
+              url:
+                type: string
+                description: "Attachment file URL"
+                example: "/assets/b/0/0/example.txt"
+                
+  "/api/media/{id}/attachments/rename":
+    post:
+      summary: Removes attachment
+      description: Removes attachment
+      tags:
+        - media
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: number
+          format: int64
+          description: Media ID
+        - in: body
+          name: description
+          schema:
+            properties:
+              id:
+                type: number
+                format: int64
+                description: "Attachment ID"
+              name:
+                type: string
+                description: "Attachment file name (max 255 characters)"
+                example: "example.txt"
+      security:
+        - SessionTokenHeader: []
+      responses:
+        400:
+          description: Bad request.
+          schema:
+            properties:
+              code:
+                type: string
+                description: >
+                  Error code:
+                    * INVALID_NAME - Invalid attachment name
+                enum:
+                  - INVALID_NAME
+              message:
+                type: string
+                description: "Error message"
+                example: "Error message"
+        401:
+          description: Unauthorized (No valid session)
+        404:
+          description: Not found
+        200:
+          description: Success
+          schema:
+            properties:
+              id:
+                type: number
+                format: int64
+                description: "Attachment ID"
+              name:
+                type: string
+                description: "Attachment file name"
+                example: "example.txt"
+              size:
+                type: number
+                format: int64
+                description: "Size of the attachment in bytes"
+              url:
+                type: string
+                description: "Attachment file URL"
+                example: "/assets/b/0/0/example.txt"
+                
+  "/api/media/{id}/attachments/remove":
+    post:
+      summary: Removes attachment
+      description: Removes attachment
+      tags:
+        - media
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: number
+          format: int64
+          description: Media ID
+        - in: query
+          name: id
+          type: number
+          format: int64
+          required: true
+          description: "ID of the attachment"
+      security:
+        - SessionTokenHeader: []
+      responses:
+        400:
+          description: Bad request.
+        401:
+          description: Unauthorized (No valid session)
+        404:
+          description: Not found
+        200:
+          description: Success
+  
+  "/api/tags":
+    get:
+      summary: Get tags
+      description: Get full tag list 
+      tags:
+        - tags
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters: []
+      security:
+        - SessionTokenHeader: []
+      responses:
+        401:
+          description: Unauthorized (No valid session)
+        200:
+          description: Tag list
+          schema:
+            type: array
+            items:
+              properties:
+                id:
+                  type: number
+                  format: int64
+                  description: Tag ID
+                name:
+                  type: string
+                  description: Tag name
+                  
+  "/api/tags/add":
+    post:
+      summary: Adds tag
+      description: Adds tag to media
+      tags:
+        - tags
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: tag
+          schema:
+            properties:
+              media_id:
+                type: number
+                format: int64
+                description: Media asset ID
+              tag_name:
+                type: string
+                description: Name of the tag (can't be blank, max 255 chars)
+      security:
+        - SessionTokenHeader: []
+      responses:
+        400:
+          description: Bad request.
+          schema:
+            properties:
+              code:
+                type: string
+                description: >
+                  Error code:
+                    * INVALID_NAME - Invalid tag name
+                enum:
+                  - INVALID_NAME
+              message:
+                type: string
+                description: "Error message"
+                example: "Error message"
+        401:
+          description: Unauthorized (No valid session)
+        200:
+          description: Success. Tag ID is returned.
+          schema:
+            properties:
+              id:
+                type: number
+                format: int64
+                description: Tag ID
+              name:
+                type: string
+                description: Tag name
+                
+                
+  "/api/tags/remove":
+    post:
+      summary: Removes tag
+      description: Removes tag from media
+      tags:
+        - tags
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: tag
+          schema:
+            properties:
+              media_id:
+                type: number
+                format: int64
+                description: Media asset ID
+              tag_id:
+                type: number
+                format: int64
+                description: Tag ID
+      security:
+        - SessionTokenHeader: []
+      responses:
+        401:
+          description: Unauthorized (No valid session)
+        200:
+          description: Success.
+          schema:
+            properties:
+              removed:
+                type: boolean
+                description: "True if the tag was removed, in case this was the last media having the tag."
+          
+  "/api/search":
+    get:
+      summary: Search
+      description: Simple search. Can filter by 1 tag. Fully paginated.
+      tags:
+        - search
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: "tag"
+          type: string
+          description: Name of the tag to filter for
+        - in: query
+          name: "order"
+          type: string
+          enum:
+            - asc
+            - desc
+          description: "Order. Can be 'asc' or 'desc'. Descendant by default."
+        - in: query
+          name: "page_index"
+          type: number
+          format: int32
+          description: Page index, staring at 0
+        - in: query
+          name: "page_size"
+          type: number
+          format: int32
+          description: Page size. Max is 256.
+      security:
+        - SessionTokenHeader: []
+      responses:
+        401:
+          description: Unauthorized (No valid session)
+        200:
+          description: Search results
+          schema:
+            properties:
+              total_count:
+                type: number
+                format: int64
+                description: "Total number of available results"
+              page_index:
+                type: number
+                format: int32
+                description: Index of the current page
+              page_count:
+                type: number
+                format: int32
+                description: Total number of pages
+              page_size:
+                type: number
+                format: int32
+                description: Page size. Results per page
+              page_items:
+                type: array
+                description: Search results for this page
+                items:
+                  $ref: '#/definitions/MediaListItem'
+          
+  "/api/random":
+    get:
+      summary: Random results
+      description: Gets random results
+      tags:
+        - search
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: "tag"
+          type: string
+          description: Name of the tag to filter for
+        - in: query
+          name: "seed"
+          type: number
+          format: int64
+          description: PRNG seed
+        - in: query
+          name: "page_size"
+          type: number
+          format: int32
+          description: Page size. Max is 256.
+      security:
+        - SessionTokenHeader: []
+      responses:
+        401:
+          description: Unauthorized (No valid session)
+        200:
+          description: Random results
+          schema:
+            properties:
+              seed:
+                type: number
+                format: int64
+                description: PRNG seed
+              page_size:
+                type: number
+                format: int32
+                description: Page size. Results per page
+              page_items:
+                type: array
+                description: Search results for this page
+                items:
+                  $ref: '#/definitions/MediaListItem'
+  
+  "/api/albums":
+    get:
+      summary: Get albums
+      description: Gets albums stored in the vault
+      tags:
+        - albums
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: "mode"
+          type: string
+          enum: 
+            - default
+            - min
+          description: "Set to min to omit size and thumbnail"
+          required: false
+      security:
+        - SessionTokenHeader: []
+      responses:
+        401:
+          description: Unauthorized (No valid session)
+        200:
+          description: Albums
+          schema:
+            type: array
+            items:
+              properties:
+                id:
+                  type: number
+                  format: int64
+                  description: Album ID
+                name:
+                  type: string
+                  description: "Album name"
+                  example: "Album name"
+                size:
+                  type: number
+                  format: int32
+                  description: Number of items in the album
+                thumbnail:
+                  type: string
+                  description: Thumbnail for the album (of the first media)
+                lm:
+                  type: number
+                  format: int64
+                  description: Last modified timestamp (Unix millis)
+                    
+    post:
+      summary: Create album
+      description: Gets albums stored in the vault
+      tags:
+        - albums
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: Album name
+          schema:
+            properties:
+              name:
+                type: string
+                description: Album name. Can't be blank. Max 255 chars.
+      security:
+        - SessionTokenHeader: []
+      responses:
+        400:
+          description: Bad request.
+          schema:
+            properties:
+              code:
+                type: string
+                description: >
+                  Error code:
+                    * INVALID_NAME - Invalid album name
+                enum:
+                  - INVALID_NAME
+              message:
+                type: string
+                description: "Error message"
+                example: "Error message"
+        401:
+          description: Unauthorized (No valid session)
+        200:
+          description: Album created
+          schema:
+            properties:
+              album_id:
+                type: number
+                format: int64
+                description: Album ID
+  
+  "/api/albums/{id}":
+    get:
+      summary: Get album
+      description: Gets album information
+      tags:
+        - albums
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          type: number
+          format: int64
+          name: id
+          description: Album ID
+      security:
+        - SessionTokenHeader: []
+      responses:
+        401:
+          description: Unauthorized (No valid session)
+        404:
+          description: Not found
+        200:
+          description: Album information
+          schema:
+            properties:
+              id:
+                type: number
+                format: int64
+                description: Album ID
+              name:
+                type: string
+                description: "Album name"
+                example: "Album name"
+              list:
+                type: array
+                description: List of media assets of the album, in order.
+                items:
+                  $ref: '#/definitions/MediaListItem'
+              lm:
+                type: number
+                format: int64
+                description: Last modified timestamp (Unix millis)
+                    
+  "/api/albums/{id}/delete":
+    post:
+      summary: Delete album
+      description: Deletes album
+      tags:
+        - albums
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          type: number
+          format: int64
+          name: id
+          description: Album ID
+      security:
+        - SessionTokenHeader: []
+      responses:
+        401:
+          description: Unauthorized (No valid session)
+        404:
+          description: Not found
+        200:
+          description: Success
+  
+  "/api/albums/{id}/rename":
+    post:
+      summary: Rename album
+      description: Renames album
+      tags:
+        - albums
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          type: number
+          format: int64
+          name: id
+          description: Album ID
+        - in: body
+          name: Album name
+          schema:
+            properties:
+              name:
+                type: string
+                description: Album name. Can't be blank. Max 255 chars.
+      security:
+        - SessionTokenHeader: []
+      responses:
+        400:
+          description: Bad request.
+          schema:
+            properties:
+              code:
+                type: string
+                description: >
+                  Error code:
+                    * INVALID_NAME - Invalid album name
+                enum:
+                  - INVALID_NAME
+              message:
+                type: string
+                description: "Error message"
+                example: "Error message"
+        401:
+          description: Unauthorized (No valid session)
+        404:
+          description: Not found
+        200:
+          description: Success
+  
+  "/api/albums/{id}/set":
+    post:
+      summary: Set album list
+      description: Sets album media list
+      tags:
+        - albums
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          type: number
+          format: int64
+          name: id
+          description: Album list
+        - in: body
+          name: Album name
+          schema:
+            properties:
+              list:
+                type: array
+                description: List of media Ids, in order
+                items:
+                  type: number
+                  format: int64
+                  description: Media ID
+      security:
+        - SessionTokenHeader: []
+      responses:
+        400:
+          description: Bad request.
+          schema:
+            properties:
+              code:
+                type: string
+                description: >
+                  Error code:
+                    * INVALID_LIST - Invalid album list
+                enum:
+                  - INVALID_LIST
+              message:
+                type: string
+                description: "Error message"
+                example: "Error message"
+        401:
+          description: Unauthorized (No valid session)
+        404:
+          description: Not found
+        200:
+          description: Success
+  
+  "/api/albums/{id}/add":
+    post:
+      summary: Adds media to album
+      description: Adds media to album
+      tags:
+        - albums
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          type: number
+          format: int64
+          name: id
+          description: Album ID
+        - in: body
+          name: Media ID
+          schema:
+            properties:
+              media_id:
+                type: number
+                format: int64
+                description: Media ID
+      security:
+        - SessionTokenHeader: []
+      responses:
+        401:
+          description: Unauthorized (No valid session)
+        404:
+          description: Not found
+        200:
+          description: Success
+          
+  "/api/albums/{id}/remove":
+    post:
+      summary: Removes media from album
+      description: Removes media from album
+      tags:
+        - albums
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          type: number
+          format: int64
+          name: id
+          description: Album ID
+        - in: body
+          name: Media ID
+          schema:
+            properties:
+              media_id:
+                type: number
+                format: int64
+                description: Media ID
+      security:
+        - SessionTokenHeader: []
+      responses:
+        401:
+          description: Unauthorized (No valid session)
+        404:
+          description: Not found
+        200:
+          description: Success
+  
+  "/api/config":
+    get:
+      summary: Get config
+      description: Gets vault configuration
+      tags:
+        - config
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters: []
+      security:
+        - SessionTokenHeader: []
+      responses:
+        401:
+          description: Unauthorized (No valid session)
+        200:
+          description: User configuration
+          schema:
+            $ref: '#/definitions/UserConfig'
+    post:
+      summary: Set config
+      description: Sets vault configuration
+      tags:
+        - config
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: User config
+          schema:
+            $ref: '#/definitions/UserConfig'
+      security:
+        - SessionTokenHeader: []
+      responses:
+        400:
+          description: Invalid config
+        401:
+          description: Unauthorized (No valid session)
+        200:
+          description: Success
+  
+  "/api/tasks":
+    get:
+      summary: Get active tasks
+      description: Get active tasks
+      tags:
+        - tasks
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters: []
+      security:
+        - SessionTokenHeader: []
+      responses:
+        401:
+          description: Unauthorized (No valid session)
+        200:
+          description: Task list
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/TaskInfo'
+              
+  "/api/tasks/{id}":
+    get:
+      summary: Get task
+      description: Get active task
+      tags:
+        - tasks
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          type: number
+          format: int64
+          name: id
+          description: Task ID
+      security:
+        - SessionTokenHeader: []
+      responses:
+        401:
+          description: Unauthorized (No valid session)
+        404:
+          description: Not found
+        200:
+          description: Task info
+          schema:
+            $ref: '#/definitions/TaskInfo'
+          
+  "/api/admin/accounts":
+    get:
+      summary: List accounts
+      description: Gets the list of accounts in the vault (not including root)
+      tags:
+        - admin
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters: []
+      security:
+        - SessionTokenHeader: []
+      responses:
+        401:
+          description: Unauthorized (No valid session)
+        403:
+          description: Access denied
+        200:
+          description: List of accounts
+          schema:
+            type: array
+            items:
+              properties:
+                username:
+                  type: string
+                  description: Username
+                  example: "admin"
+                write:
+                  type: boolean
+                  description: "True if the user has write access to the vault"
+    post:
+      summary: Creates account
+      description: Creates an account with access to the vault
+      tags:
+        - admin
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: Account data
+          schema:
+            properties:
+              username:
+                type: string
+                description: Account username (can't be blank, max 255 chars)
+                example: admin
+              password:
+                type: string
+                description: Account password (can't be blank, max 255 chars)
+                example: password
+              write:
+                type: boolean
+                description: "True to give the user write access to the vault, false for read-only accounts"
+      security:
+        - SessionTokenHeader: []
+      responses:
+        400:
+          description: Bad request.
+          schema:
+            properties:
+              code:
+                type: string
+                description: >
+                  Error code:
+                    * USERNAME_INVALID - Invalid username
+                    * PASSWORD_INVALID - Invalid password
+                    * USERNAME_IN_USE - There si already another user with the same username
+                enum:
+                  - USERNAME_INVALID
+                  - PASSWORD_INVALID
+                  - USERNAME_IN_USE
+              message:
+                type: string
+                description: "Error message"
+                example: "Error message"
+        401:
+          description: Unauthorized (No valid session)
+        403:
+          description: Access denied
+        200:
+          description: Success
+          
+          
+  "/api/admin/accounts/delete":
+    post:
+      summary: Deletes account
+      description: "Creates an account with access to the vault. Note: Root account cannot be removed"
+      tags:
+        - admin
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: Account data
+          schema:
+            properties:
+              username:
+                type: string
+                description: Account username (can't be blank, max 255 chars)
+                example: admin
+      security:
+        - SessionTokenHeader: []
+      responses:
+        401:
+          description: Unauthorized (No valid session)
+        403:
+          description: Access denied
+        404:
+          description: User not found
+        200:
+          description: Success
+                
+                  
+definitions:
+    MediaListItem:
+      description: Media asset info to show in lists
+      properties:
+        id:
+          type: number
+          format: int64
+          description: "Media ID"
+        type:
+          type: number
+          format: int32
+          description: >
+            Media Type:
+              * 0 - Deleted media
+              * 1 - Image
+              * 2 - Video
+              * 3 - Audio
+          enum:
+            - 0
+            - 1
+            - 2
+            - 3
+        title:
+          type: string
+          description: "Media title"
+          example: "Media title"
+        description:
+          type: string
+          description: "Media description"
+          example: "Media description"
+        tags:
+          type: array
+          description: List of tags
+          items:
+            type: number
+            format: int64
+        thumbnail:
+          type: string
+          description: "Path to reach the thumbnail. Empty if no thumbnail. Thumnails are squared images."
+          example: "/assets/b/0/0/thumbnail.jpg"
+        duration:
+          type: number
+          format: double
+          description: Duration of the media in seconds (videos and audios)
+    
+    UserConfig:
+      description: User configuration
+      properties:
+        title:
+          type: string
+          description: Custom vault title
+        max_tasks:
+          type: number
+          format: int32
+          description: Max number of tasks in parallel. Set to 0 for no limit.
+        encoding_threads:
+          type: number
+          format: int32
+          description: Max number of threads to use for FFmpeg tasks.
+        video_previews_interval:
+          type: number
+          format: int32
+          description: Video previews interval (seconds)
+        resolutions:
+          type: array
+          description: Extra resolutions to encode videos
+          items:
+            properties:
+              width:
+                type: number
+                format: int32
+                description: Width (px)
+              height:
+                type: number
+                format: int32
+                description: Height (px)
+              fps:
+                type: number
+                format: int32
+                description: Frames per second
+        image_resolutions:
+          type: array
+          description: Extra resolutions to encode images
+          items:
+            properties:
+              width:
+                type: number
+                format: int32
+                description: Width (px)
+              height:
+                type: number
+                format: int32
+                description: Height (px)
+        css:
+          type: string
+          description: Custom CSS for the frontend
+                
+    TaskInfo:
+      description: Task status info
+      properties:
+        id:
+          type: number
+          format: int64
+          description: Task ID
+        running:
+          type: boolean
+          description: "True if the task is running"
+        media_id:
+          type: number
+          format: int64
+          description: Media ID
+        type:
+          type: number
+          format: int32
+          description: >
+            Task Type:
+              * 0 - Encode original
+              * 1 - Encode extra resolution
+              * 2 - Generate video previews
+          enum:
+            - 0
+            - 1
+            - 2
+        resolution:
+          description: "Resolution info"
+          properties:
+            width:
+              type: number
+              format: int32
+              description: Width (px)
+            height:
+              type: number
+              format: int32
+              description: Height (px)
+            fps:
+              type: number
+              format: int32
+              description: Frames per second
+        stage:
+          type: string
+          description: >
+            Task Stage:
+              * PREPARE - Preparing task resources
+              * COPY - Decrypting and copying media assets
+              * PROBE - Extracting metadata from media assets
+              * ENCODE - Encoding
+              * ENCRYPT - Encrypting new assets
+              * UPDATE - Updating vault
+              * FINISH - Finishing (clearing temp files, etc)
+          enum:
+            - PREPARE
+            - COPY
+            - PROBE
+            - ENCODE
+            - ENCRYPT
+            - UPDATE
+            - FINISH
+        stage_start:
+          type: number
+          format: int64
+          description: Stage start timestamp (Unix milliseconds)
+        time_now:
+          type: number
+          format: int64
+          description: Current server time (Unix milliseconds)
+        stage_progress:
+          type: number
+          format: double
+          description: "Stage progress: A number from 0 to 100"
