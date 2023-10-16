@@ -2,7 +2,7 @@ swagger: "2.0"
 info:
   title: PersonalMediaVault Backend API
   description: API to access PersonalMediaVault from a web client.
-  version: 1.12.2
+  version: 1.13.1
 
 schemes:
   - http
@@ -1962,8 +1962,10 @@ paths:
                 description: >
                   Error code:
                     * INVALID_LIST - Invalid album list
+                    * MAX_SIZE_REACHED - The list has more than 1024 elements
                 enum:
                   - INVALID_LIST
+                  - MAX_SIZE_REACHED
               message:
                 type: string
                 description: "Error message"
@@ -2003,6 +2005,21 @@ paths:
       security:
         - SessionTokenHeader: []
       responses:
+        400:
+          description: Bad request.
+          schema:
+            properties:
+              code:
+                type: string
+                description: >
+                  Error code:
+                    * MAX_SIZE_REACHED - The list has more than 1024 elements
+                enum:
+                  - MAX_SIZE_REACHED
+              message:
+                type: string
+                description: "Error message"
+                example: "Error message"
         401:
           description: Unauthorized (No valid session)
         404:
@@ -2038,6 +2055,60 @@ paths:
       security:
         - SessionTokenHeader: []
       responses:
+        401:
+          description: Unauthorized (No valid session)
+        404:
+          description: Not found
+        200:
+          description: Success
+
+  "/api/albums/{id}/move":
+    post:
+      summary: Moves media in album
+      description: Moves a media asset to another position in the album
+      tags:
+        - albums
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          type: number
+          format: int64
+          name: id
+          description: Album ID
+        - in: body
+          name: Media ID
+          schema:
+            properties:
+              media_id:
+                type: number
+                format: int64
+                description: Media ID
+              position:
+                type: number
+                format: int32
+                description: New position in the album for the media
+      security:
+        - SessionTokenHeader: []
+      responses:
+        400:
+          description: Bad request.
+          schema:
+            properties:
+              code:
+                type: string
+                description: >
+                  Error code:
+                    * MAX_SIZE_REACHED - The list has more than 1024 elements
+                enum:
+                  - MAX_SIZE_REACHED
+              message:
+                type: string
+                description: "Error message"
+                example: "Error message"
         401:
           description: Unauthorized (No valid session)
         404:

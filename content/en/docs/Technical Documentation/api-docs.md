@@ -7,4 +7,4 @@ categories: [Guides, Technical]
 tags: [guides, technical, documentation]
 ---
 
-{{< swaggerui src="/apis/api-docs.yml" >}}
+{{< swaggerui src="/apis/en/api-docs.yml" >}}
