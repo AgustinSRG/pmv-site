@@ -38,7 +38,7 @@ services:
     volumes:
       - './:/vault'
     restart: unless-stopped
-    command: --daemon --clean --log-requests --vault-path /vault
+    command: --daemon --clean --log-requests --skip-lock --vault-path /vault
 ```
 
 Check the [server options](/docs/technical-documentation/server-options/) for more information of all the available options to run the server.
