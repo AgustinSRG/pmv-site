@@ -124,7 +124,7 @@ You can split the video in different slices by clicking the option in the contex
 
 ![Screenshot](/images/en/video-player-time-slices.jpg)
 
-You can change the time slices in text mode by going to the  **Time slices** tab of the player editor.
+You can also change the time slices in text mode by going to the  **Time slices** tab of the player editor.
 
 ### Attachments
 
