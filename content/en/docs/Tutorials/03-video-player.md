@@ -59,7 +59,7 @@ You can open the player configuration by pressing the configuration button or th
 
 You can find several options:
 
- - You can toggle the loop option. If enabled, the player will automatically replay the video from the beginning after it ending.  You can press the **L** key to do the same.
+ - You can toggle the loop option. If enabled, the player will automatically replay the video from the beginning after it ending. You can press the **L** key to do the same.
  - You can toggle the auto-next option. If enabled, the player will attempt to play the next media in the list after the current video finishes playing.
  - You can change the playback speed, to accelerate it or slow it down.
  - You can change the scale of the video, in order to zoom-in to check small details.
