@@ -25,4 +25,4 @@ Run the tool help command to see the manual:
 pmv-cli --help
 ```
 
-For more information, check the [Manual](/docs/console-client/manual)
+For more information, check the [Manual]({{< baseurl >}}docs/console-client/manual)

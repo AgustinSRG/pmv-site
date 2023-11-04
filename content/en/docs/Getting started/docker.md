@@ -41,7 +41,7 @@ services:
     command: --daemon --clean --log-requests --skip-lock --vault-path /vault
 ```
 
-Check the [server options](/docs/technical-documentation/server-options/) for more information of all the available options to run the server.
+Check the [server options]({{< baseurl >}}docs/technical-documentation/server-options/) for more information of all the available options to run the server.
 
 ## Running the vault
 

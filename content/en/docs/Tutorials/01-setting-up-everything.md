@@ -13,11 +13,11 @@ Most modern browsers are supported, including Chromium-based browser, Firefox-ba
 
 The fist screen you will see is a login screen asking for your vault credentials to unlock the vault. You have to use the credentials you provide when creating the vault. If you didn't specify any credentials, by default, the username is `admin` and the password is also `admin`.
 
-![Screenshot](/images/en/unlock-screen.jpg)
+![Screenshot]({{< baseurl >}}images/en/unlock-screen.jpg)
 
 After you successfully log into your vault, you will be presented with the PersonalMediaVault main interface:
 
-![Screenshot](/images/en/initial-screen.jpg)
+![Screenshot]({{< baseurl >}}images/en/initial-screen.jpg)
 
 Let's get familiar with the interface elements!
 
@@ -50,7 +50,7 @@ The top bar buttons are the following, from left to right:
 
 The vault settings menu has all the options you need to set your vault up. Let's dive into them and make the necessary actions.
 
-![Screenshot](/images/en/vault-settings.jpg)
+![Screenshot]({{< baseurl >}}images/en/vault-settings.jpg)
 
 ### Change theme
 
@@ -76,7 +76,7 @@ Click in the **Change username** in order to change your username. This is the u
 
 In order to change it, you must also provide your current password.
 
-![Screenshot](/images/en/change-username.jpg)
+![Screenshot]({{< baseurl >}}images/en/change-username.jpg)
 
 ### Change password
 
@@ -88,7 +88,7 @@ Make sure to use a very strong password, using letters (uppercase and lowercase)
 
 Is it recommended to use a password manager, and making a backup of your password. If you lose your password, it will be impossible to recover the vault content, since it's encrypted with that password.
 
-![Screenshot](/images/en/change-password.jpg)
+![Screenshot]({{< baseurl >}}images/en/change-password.jpg)
 
 ### Administrate accounts
 
@@ -115,15 +115,15 @@ The first tab, called **General** will allow you to configure the following:
  - The max number of threads to use for each task. By default is `0`, meaning it will use as many as optimal. You can set it in order to restrict the CPU usage.
  - The video previews interval, in seconds. Each interval, PersonalMediaVault will make a preview of a video in order to display them when hovering the timeline.
 
-![Screenshot](/images/en/advanced-settings-1.jpg)
+![Screenshot]({{< baseurl >}}images/en/advanced-settings-1.jpg)
 
 The second tab, called **Extra resolutions** will allow you to enable certain extra resolutions to use for small screens, in order to save memory and bandwidth. If you plan to use from a tablet or a mobile device, you may want to enable some of them.
 
-![Screenshot](/images/en/advanced-settings-2.jpg)
+![Screenshot]({{< baseurl >}}images/en/advanced-settings-2.jpg)
 
 The third tab, called **Custom style** will let you specify custom CSS code to apply to the web interface. You can use this to make your own theme. However, this option is very advanced and requires CSS knowledge. If you do not have such knowledge or you are not interesting in a custom theme, just ignore this option.
 
-![Screenshot](/images/en/advanced-settings-3.jpg)
+![Screenshot]({{< baseurl >}}images/en/advanced-settings-3.jpg)
 
 ### Batch operation
 
@@ -141,4 +141,4 @@ You can apply any of the following operations:
 
 This can be useful if you want to make a change to many media assets, saving you time.
 
-![Screenshot](/images/en/batch-operation.jpg)
+![Screenshot]({{< baseurl >}}images/en/batch-operation.jpg)

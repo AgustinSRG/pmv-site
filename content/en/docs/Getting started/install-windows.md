@@ -34,7 +34,7 @@ The installer will add an option to the file explorer to open a folder with Pers
 
 Create a new folder, and use that option to open with PersonalMediaVault.
 
-![Open with PersonalMediaVault](/images/en/windows-open-with.jpg)
+![Open with PersonalMediaVault]({{< baseurl >}}images/en/windows-open-with.jpg)
 
 That will open the launcher, asking you for an initial username and password for your vault.
 

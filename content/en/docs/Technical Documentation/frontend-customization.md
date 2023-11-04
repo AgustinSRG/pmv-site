@@ -12,7 +12,7 @@ This document specifies the vault frontend customization capabilities implemente
 
 You can customize the vault frontend title and also setup custom CSS code if you need it. Simply go to `Settings` and then `Advanced Settings`.
 
-![Screenshot](/images/en/advanced-settings-3.jpg)
+![Screenshot]({{< baseurl >}}images/en/advanced-settings-3.jpg)
 
 The custom title will affect the page base title.
 

@@ -9,17 +9,17 @@ weight: 2
 
 In order to add media files into your vault, you may use the **Upload** option in the main menu.
 
-![Screenshot](/images/en/upload-1.jpg)
+![Screenshot]({{< baseurl >}}images/en/upload-1.jpg)
 
 You can **drag and drop files** into the box with dotted border, or **click it to open the file selector**.
 
 Once you select a file, a modal will open asking you to confirm it, while allowing you to add the media into an album, and add tags. This is very useful when you upload multiple times at once that share some tags.
 
-![Screenshot](/images/en/upload-2.jpg)
+![Screenshot]({{< baseurl >}}images/en/upload-2.jpg)
 
 When the upload process finishes, you can check the uploaded media in the **Ready** tab.
 
-![Screenshot](/images/en/upload-3.jpg)
+![Screenshot]({{< baseurl >}}images/en/upload-3.jpg)
 
 If the upload process fails for some reason, it will be placed in the **Error** tab.
 

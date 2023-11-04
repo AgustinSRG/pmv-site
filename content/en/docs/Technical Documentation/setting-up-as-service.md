@@ -8,7 +8,7 @@ tags: [guides, tutorials, technical, documentation]
 
 This technical guide explains how to set up PersonalMediaVault as a service in a Linux machine using systemd.
 
-Make sure to follow the [installation guide on Linux](/docs/getting-started/install-linux-deb/) before doing this. This guide expects you to have PersonalMediaVault already installed in your system.
+Make sure to follow the [installation guide on Linux]({{< baseurl >}}docs/getting-started/install-linux-deb/) before doing this. This guide expects you to have PersonalMediaVault already installed in your system.
 
 The first step for creating a systemd service is to create an user for that service.
 
@@ -67,7 +67,7 @@ WantedBy=multi-user.target
 
 Note: You may want to change some options. For that, make sure to check the following:
 
- - [Server options for PersonalMediaVault](/docs/technical-documentation/server-options/)
+ - [Server options for PersonalMediaVault]({{< baseurl >}}docs/technical-documentation/server-options/)
  - [Systemd service file manual](https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html)
 
 After you saved the service file, and exited the editor, run the following command to enable the service, so it runs every time the system starts:

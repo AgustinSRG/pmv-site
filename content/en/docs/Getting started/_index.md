@@ -28,5 +28,5 @@ The installation guides also explain how to create a vault and run it in your sy
 
 ## Next steps
 
-After installing and creating your first vault, you may want to check out the [Tutorials](/docs/tutorials/) section for more guides and tutorial on how to use PersonalMediaVault.
+After installing and creating your first vault, you may want to check out the [Tutorials]({{< baseurl >}}docs/tutorials/) section for more guides and tutorial on how to use PersonalMediaVault.
 

@@ -15,7 +15,7 @@ The PersonalMediaVault image viewer is very similar to the video player:
  - At the top-right, you have a button to open the image metadata editor.
  - At the bottom you have the viewer controls.
 
-![Screenshot](/images/en/image-viewer.jpg)
+![Screenshot]({{< baseurl >}}images/en/image-viewer.jpg)
 
 ## Basic controls
 
@@ -25,21 +25,21 @@ You can change the image scale with the scale control, which displays when hover
  - Drag the scale control or press the **+** and **-** keys to increase or decrease the scale by 10% respectively.
  - You can press the **Shift** key, along with the **+** and **-** keys to increase or decrease the scale by 1% respectively. 
 
-![Screenshot](/images/en/image-viewer-scale.jpg)
+![Screenshot]({{< baseurl >}}images/en/image-viewer-scale.jpg)
 
 By pressing the configuration button or the **S** key, you can open the [image viewer configuration](#configuration).
 
-![Screenshot](/images/en/image-viewer-config-btn.jpg)
+![Screenshot]({{< baseurl >}}images/en/image-viewer-config-btn.jpg)
 
 By pressing the full screen button, or the **F** key, you can toggle the full screen mode for the image viewer.
 
-![Screenshot](/images/en/image-viewer-full-screen.jpg)
+![Screenshot]({{< baseurl >}}images/en/image-viewer-full-screen.jpg)
 
 ## Configuration
 
 You can open the viewer configuration by pressing the configuration button or the **S** key.
 
-![Screenshot](/images/en/image-viewer-config.jpg)
+![Screenshot]({{< baseurl >}}images/en/image-viewer-config.jpg)
 
 You can find several options:
 
@@ -52,7 +52,7 @@ You can find several options:
 
 When right clicking with a mouse, or with a long tap in touch devices, it will open the viewer context menu, with several options for fast access to them.
 
-![Screenshot](/images/en/image-viewer-context-menu.jpg)
+![Screenshot]({{< baseurl >}}images/en/image-viewer-context-menu.jpg)
 
 You can find several options:
 
@@ -69,7 +69,7 @@ You can find several options:
 
 You can open the viewer editor by clicking the expand button at the top right corner of the viewer. Also you can press the **E** key.
 
-![Screenshot](/images/en/image-viewer-editor.jpg)
+![Screenshot]({{< baseurl >}}images/en/image-viewer-editor.jpg)
 
 The viewer editor allows you to change any aspect of the image.
 
@@ -87,7 +87,7 @@ When out of the image notes editor mode, they will be displayed as translucid sq
 
 You can use image notes, for example, to name elements of the image, add extra information or translate texts in a foreign language.
 
-![Screenshot](/images/en/image-viewer-notes.jpg)
+![Screenshot]({{< baseurl >}}images/en/image-viewer-notes.jpg)
 
 You can also change the image notes in text mode by going to the **Image Notes** tab of the viewer editor, very useful to import and export notes.
 

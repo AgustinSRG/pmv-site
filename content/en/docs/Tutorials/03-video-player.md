@@ -15,33 +15,33 @@ The PersonalMediaVault video player is a feature rich player based on the YouTub
  - At the top-right, you have a button to open the video metadata editor.
  - At the bottom you have the player controls, and on top of them, you have the timeline. 
 
-![Screenshot](/images/en/video-player.jpg)
+![Screenshot]({{< baseurl >}}images/en/video-player.jpg)
 
 ## Basic controls
 
 In order to play or pause, you can simply click the player at the center, use the play button in the player controls bar, or using a keyboard shortcut: **Space Bar** or **K**.
 
-![Screenshot](/images/en/video-player-play.jpg)
+![Screenshot]({{< baseurl >}}images/en/video-player-play.jpg)
 
 In order to change the volume, you can use the volume control in the player controls bar, which displays a slider when hovering it or clicking it. You can also use a keyboard shortcut, being the **Up** and **Down** arrow keys, which will change the volume by 5%. You can press **Shift** while using the vertical arrow keys in order to fine-tune the volume by changing it 1% each key press.
 
 You can mute or un-mute the video by clicking on the volume control in the player controls bar, or using the key **M**.
 
-![Screenshot](/images/en/video-player-volume.jpg)
+![Screenshot]({{< baseurl >}}images/en/video-player-volume.jpg)
 
 By pressing the configuration button or the **S** key, you can open the [video player configuration](#configuration).
 
-![Screenshot](/images/en/video-player-config-btn.jpg)
+![Screenshot]({{< baseurl >}}images/en/video-player-config-btn.jpg)
 
 By pressing the full screen button, or the **F** key, you can toggle the full screen mode for the video player.
 
-![Screenshot](/images/en/video-player-full-screen.jpg)
+![Screenshot]({{< baseurl >}}images/en/video-player-full-screen.jpg)
 
 ## Timeline
 
 You can hover the timeline in order to get the timestamp you are hovering into, and an image preview, if available.
 
-![Screenshot](/images/en/video-player-timeline.jpg)
+![Screenshot]({{< baseurl >}}images/en/video-player-timeline.jpg)
 
 You can click the timeline in order to change the current time.
 
@@ -55,7 +55,7 @@ Also, if the player is paused, you can use the **dot** and **comma** keys to go 
 
 You can open the player configuration by pressing the configuration button or the **S** key.
 
-![Screenshot](/images/en/video-player-config.jpg)
+![Screenshot]({{< baseurl >}}images/en/video-player-config.jpg)
 
 You can find several options:
 
@@ -71,7 +71,7 @@ You can find several options:
 
 When right clicking with a mouse, or with a long tap in touch devices, it will open the player context menu, with several options for fast access to them.
 
-![Screenshot](/images/en/video-player-context-menu.jpg)
+![Screenshot]({{< baseurl >}}images/en/video-player-context-menu.jpg)
 
 You can find several options:
 
@@ -88,7 +88,7 @@ You can find several options:
 
 You can open the player editor by clicking the expand button at the top right corner of the player. Also you can press the **E** key.
 
-![Screenshot](/images/en/video-player-editor.jpg)
+![Screenshot]({{< baseurl >}}images/en/video-player-editor.jpg)
 
 The player editor allows you to change any aspect of the video.
 
@@ -106,7 +106,7 @@ If you upload a Matroska file (`.mkv` extension) to the vault, the available sub
 
 When a video has subtitles, you can select them at the player configuration menu, while also being able to customize their style.
 
-![Screenshot](/images/en/video-player-subtitles.jpg)
+![Screenshot]({{< baseurl >}}images/en/video-player-subtitles.jpg)
 
 ### Audio tracks
 
@@ -116,13 +116,13 @@ If you upload a Matroska file (`.mkv` extension) to the vault, the available aud
 
 When a video has extra audio tracks, you can select the one that will play at the player configuration menu.
 
-![Screenshot](/images/en/video-player-audios.jpg)
+![Screenshot]({{< baseurl >}}images/en/video-player-audios.jpg)
 
 ### Time slices
 
 You can split the video in different slices by clicking the option in the context menu, or pressing the **N** key. This will open an editor where you can add time slices, specifying the start time, and a name.
 
-![Screenshot](/images/en/video-player-time-slices.jpg)
+![Screenshot]({{< baseurl >}}images/en/video-player-time-slices.jpg)
 
 You can also change the time slices in text mode by going to the  **Time slices** tab of the player editor.
 

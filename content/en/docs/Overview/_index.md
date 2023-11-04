@@ -125,6 +125,6 @@ The server is meant to be run by the owner of the media files, either in local o
 
 ## Where should I go next?
 
-* [Getting Started](/docs/getting-started/): Download, install and run PersonalMediaVault
-* [Tutorials](/docs/tutorials/): Check out some guides and tutorials on how to use PersonalMediaVault.
+* [Getting Started]({{< baseurl >}}docs/getting-started/): Download, install and run PersonalMediaVault
+* [Tutorials]({{< baseurl >}}docs/tutorials/): Check out some guides and tutorials on how to use PersonalMediaVault.
 
