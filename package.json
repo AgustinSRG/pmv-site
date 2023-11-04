@@ -15,6 +15,7 @@
     "_serve": "npm run _hugo-dev -- --minify serve",
     "build:preview": "npm run _hugo-dev -- --minify --baseURL \"${DEPLOY_PRIME_URL:-/}\"",
     "build:production": "npm run _hugo -- --minify",
+    "build:pages": "npm run _hugo -- --minify --config hugo-pages.toml",
     "build": "npm run _build",
     "check:links:all": "HTMLTEST_ARGS= npm run _check:links",
     "check:links": "npm run _check:links",
