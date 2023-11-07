@@ -68,7 +68,7 @@ By default, PersonalMediaVault will detect your browser language.
 
 By selecting your preferred language, PersonalMediaVault will save that preference in the local storage of your browser. In order to remember it in future sessions.
 
-> Isn't your language yet supported? Feel free to contribute with a [pull request](https://github.com/AgustinSRG/PersonalMediaVault/pulls) to add a new language. In order to add a new language, check the [frontend/src/locales](https://github.com/AgustinSRG/PersonalMediaVault/tree/master/frontend/src/locales) folder. Copy `en.json` and translate every key to your language.
+> Isn't your language yet supported? Feel free to contribute with a [pull request](https://github.com/AgustinSRG/PersonalMediaVault/pulls) to add a new language. In order to add a new language, check the [frontend/src/locales](https://github.com/AgustinSRG/PersonalMediaVault/tree/master/frontend/src/locales) folder. Copy `locale-en.json` and translate every key to your language.
 
 ### Change username
 
