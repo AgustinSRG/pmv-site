@@ -7,4 +7,4 @@ categories: [Guides, Technical]
 tags: [guides, technical, documentation]
 ---
 
-{{< swaggerui src="../../../apis/en/api-docs.yml" >}}
+{{< swaggerui src="https://agustinsrg.github.io/pmv-site/apis/en/api-docs.yml" >}}
