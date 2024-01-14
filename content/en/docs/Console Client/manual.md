@@ -29,7 +29,9 @@ pmv-cli [OPTIONS] <COMMAND>
 | [album](#command-album) | Manages albums |
 | [config](#command-config) | Manages vault configuration |
 | [task](#command-task) | Retrieves tasks information |
+| [invites](#command-invites) | Manages invites |
 | [batch](#command-batch) | Applies a batch operation to a list of media assets |
+| [get-server-information](#command-get-server-information) | Gets server information, like the version it is using |
 
 <ins>**Options:**</ins>
 
@@ -56,6 +58,8 @@ pmv-cli login [OPTIONS]
 | Option | Description |
 | --- | --- |
 | `-U, --username <USERNAME>` | Vault username. You can also specify the credentials in the URL |
+| `-D, --duration <DURATION>` | Session duration. Can be: day, week, month or year |
+| `-I, --invite-code <INVITE_CODE>` | Invite code. Setting this option will ignore the credentials and use the code |
 | `-h, --help` | Print help |
 
 ## Command: logout
@@ -240,7 +244,8 @@ pmv-cli media <COMMAND>
 | [set-title](#command-media-set-title) | Changes the title of a media asset |
 | [set-description](#command-media-set-description) | Changes the description of a media asset |
 | [set-extended-description](#command-media-set-extended-description) | Changes the extended description of a media asset |
-| [set-force-start-beginning](#command-media-set-force-start-beginning) | Changes the description of a media asset |
+| [set-force-start-beginning](#command-media-set-force-start-beginning) | Changes the forced start from beginning parameter of a media asset |
+| [set-is-animation](#command-media-set-is-animation) | Changes the is-animation parameter of a media asset |
 | [set-thumbnail](#command-media-set-thumbnail) | Sets the thumbnail of a media asset |
 | [get-time-slices](#command-media-get-time-slices) | Prints the time slices of a media asset |
 | [set-time-slices](#command-media-set-time-slices) | Sets the time slices of a media asset |
@@ -476,7 +481,7 @@ pmv-cli media set-extended-description <MEDIA> <PATH>
 
 ### Command: media set-force-start-beginning
 
-Changes the description of a media asset
+Changes the forced start from beginning parameter of a media asset
 
 <ins>**Usage:**</ins>
 
@@ -490,6 +495,29 @@ pmv-cli media set-force-start-beginning <MEDIA> <FORCE_START_BEGINNING>
 | --- | --- |
 | `<MEDIA>` | Media asset ID |
 | `<FORCE_START_BEGINNING>` | Set to 'true' if you want to tell the clients not to store the time, so they always start from the beginning |
+
+<ins>**Options:**</ins>
+
+| Option | Description |
+| --- | --- |
+| `-h, --help` | Print help |
+
+### Command: media set-is-animation
+
+Changes the is-animation parameter of a media asset
+
+<ins>**Usage:**</ins>
+
+```
+pmv-cli media set-is-animation <MEDIA> <IS_ANIMATION>
+```
+
+<ins>**Arguments:**</ins>
+
+| Argument | Description |
+| --- | --- |
+| `<MEDIA>` | Media asset ID |
+| `<IS_ANIMATION>` | Set to 'true' if you want to tell the clients to treat the media as an animation, so they force the loop and disable time skipping |
 
 <ins>**Options:**</ins>
 
@@ -1616,6 +1644,120 @@ pmv-cli task wait <TASK>
 | --- | --- |
 | `-h, --help` | Print help |
 
+## Command: invites
+
+Manages invites
+
+<ins>**Usage:**</ins>
+
+```
+pmv-cli invites <COMMAND>
+```
+
+<ins>**Commands:**</ins>
+
+| Command | Description |
+| --- | --- |
+| [check](#command-invites-check) | Prints the current invite code, if any |
+| [generate](#command-invites-generate) | Generates a new invite code |
+| [clear](#command-invites-clear) | Clears the current invite code |
+| [list-sessions](#command-invites-list-sessions) | List active invited sessions |
+| [close-session](#command-invites-close-session) | Closes an invited session |
+
+<ins>**Options:**</ins>
+
+| Option | Description |
+| --- | --- |
+| `-h, --help` | Print help |
+
+### Command: invites check
+
+Prints the current invite code, if any
+
+<ins>**Usage:**</ins>
+
+```
+pmv-cli invites check
+```
+
+<ins>**Options:**</ins>
+
+| Option | Description |
+| --- | --- |
+| `-h, --help` | Print help |
+
+### Command: invites generate
+
+Generates a new invite code
+
+<ins>**Usage:**</ins>
+
+```
+pmv-cli invites generate [OPTIONS]
+```
+
+<ins>**Options:**</ins>
+
+| Option | Description |
+| --- | --- |
+| `-D, --duration <DURATION>` | Session duration. Can be: day, week, month or year |
+| `-h, --help` | Print help |
+
+### Command: invites clear
+
+Clears the current invite code
+
+<ins>**Usage:**</ins>
+
+```
+pmv-cli invites clear
+```
+
+<ins>**Options:**</ins>
+
+| Option | Description |
+| --- | --- |
+| `-h, --help` | Print help |
+
+### Command: invites list-sessions
+
+List active invited sessions
+
+<ins>**Usage:**</ins>
+
+```
+pmv-cli invites list-sessions [OPTIONS]
+```
+
+<ins>**Options:**</ins>
+
+| Option | Description |
+| --- | --- |
+| `-c, --csv` | CSV format |
+| `-h, --help` | Print help |
+
+### Command: invites close-session
+
+Closes an invited session
+
+<ins>**Usage:**</ins>
+
+```
+pmv-cli invites close-session <INDEX>
+```
+
+<ins>**Arguments:**</ins>
+
+| Argument | Description |
+| --- | --- |
+| `<INDEX>` | Session index |
+
+<ins>**Options:**</ins>
+
+| Option | Description |
+| --- | --- |
+| `-h, --help` | Print help |
+
 ## Command: batch
 
 Applies a batch operation to a list of media assets
@@ -1745,6 +1887,22 @@ Delete media assets
 
 ```
 pmv-cli batch delete
+```
+
+<ins>**Options:**</ins>
+
+| Option | Description |
+| --- | --- |
+| `-h, --help` | Print help |
+
+## Command: get-server-information
+
+Gets server information, like the version it is using
+
+<ins>**Usage:**</ins>
+
+```
+pmv-cli get-server-information
 ```
 
 <ins>**Options:**</ins>
