@@ -22,6 +22,9 @@ You can also customize the page by clicking in the cog button at the top-right. 
  - The maximum number of items to load each page.
  - The size range of the thumbnails.
  - The number of items to try fit in a single row (may not be possible if the size of the thumbnails is too big or too small, try changing both until you get the sizes you like).
+ - The padding of the thumbnails
+ - The corner style of the thumbnails
+ - If you want to display or hide titles.
 
 ![Screenshot]({{< baseurl >}}images/en/page-config-modal.jpg)
 
@@ -31,7 +34,7 @@ In case you want to load random media files from your media vault, you can try t
 
 Each time you reload, a new seed is used, giving you a new set of random results.
 
-![Screenshot]({{< baseurl >}}images/en/home-page.jpg)
+![Screenshot]({{< baseurl >}}images/en/random-page.jpg)
 
 ## Fast search
 

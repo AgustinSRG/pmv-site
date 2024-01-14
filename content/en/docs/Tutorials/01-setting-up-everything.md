@@ -72,7 +72,7 @@ By selecting your preferred language, PersonalMediaVault will save that preferen
 
 ### Change username
 
-Click in the **Change username** in order to change your username. This is the username you use to unlock the vault.
+Click in the **Change username** option in order to change your username. This is the username you use to unlock the vault.
 
 In order to change it, you must also provide your current password.
 
@@ -80,7 +80,7 @@ In order to change it, you must also provide your current password.
 
 ### Change password
 
-Click in the **Change password** in order to change your password. This is the password you use to unlock the vault.
+Click in the **Change password** option in order to change your password. This is the password you use to unlock the vault.
 
 In order to change it, you must also provide your current password.
 
@@ -89,6 +89,14 @@ Make sure to use a very strong password, using letters (uppercase and lowercase)
 Is it recommended to use a password manager, and making a backup of your password. If you lose your password, it will be impossible to recover the vault content, since it's encrypted with that password.
 
 ![Screenshot]({{< baseurl >}}images/en/change-password.jpg)
+
+### Invite
+
+Click in the **Invite** option in order to invite users or devices to access the vault.
+
+This feature will allow you to generate single-use codes that can be used to access the vault in read-only mode.
+
+![Screenshot]({{< baseurl >}}images/en/invite-code-modal.jpg)
 
 ### Administrate accounts
 
