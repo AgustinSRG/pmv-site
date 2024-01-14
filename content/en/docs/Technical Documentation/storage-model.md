@@ -220,6 +220,7 @@ The file contains the following fields:
 | `previews_interval`     | Number (Floating point)                       | Video previews interval in seconds                                                                                            |
 | `previews_task`         | Number (64 bit unsigned integer)              | If the video previews asset is not ready, the ID of the task assigned to generate it                                          |
 | `force_start_beginning` | Boolean                                       | True to indicate the player not to store the current playing time, so the video or audio starts from the beginning every time |
+| `is_anim`               | Boolean                                       | True to indicate the player to treat the media as an animation                                                                |
 | `img_notes`             | Boolean                                       | True if the image has a notes asset                                                                                           |
 | `img_notes_asset`       | Number (64 bit unsigned integer)              | Asset ID of the image notes asset. The image notes asset is Single-File                                                       |
 | `resolutions`           | Array&lt;Resolution&gt;                       | List of extra resolutions                                                                                                     |
