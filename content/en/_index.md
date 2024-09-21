@@ -145,7 +145,7 @@ You can freely distribute the project, make any changes or even use for commerci
 
 {{% blocks/feature icon="fab fa-github" title="Contributions welcome!"
     url="https://github.com/google/docsy-example" %}}
-Fell free to make a [Pull Request](https://github.com/AgustinSRG/PersonalMediaVault/pulls)
+Feel free to make a [Pull Request](https://github.com/AgustinSRG/PersonalMediaVault/pulls)
 on **GitHub** for any feature or bug fix you want to contribute to the project.
 {{% /blocks/feature %}}
 
