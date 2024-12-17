@@ -2,7 +2,7 @@ swagger: "2.0"
 info:
   title: PersonalMediaVault Backend API
   description: API to access PersonalMediaVault from a web client.
-  version: 1.19.0
+  version: 1.20.2
 
 schemes:
   - http
@@ -2163,6 +2163,63 @@ paths:
                 type: number
                 format: int64
                 description: Last modified timestamp (Unix millis)
+              thumbnail:
+                type: string
+                description: Thumbnail for the album (of the first media)
+
+  "/api/albums/{id}/thumbnail":
+    post:
+      summary: Changes album thumbnail.
+      description: Changes the thumbnail for an album.
+      tags:
+        - albums
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          type: number
+          format: int64
+          name: id
+          description: Album ID
+        - in: formData
+          name: file
+          type: file
+          description: The file to upload.
+      security:
+        - SessionTokenHeader: []
+      responses:
+        400:
+          description: Bad request.
+          schema:
+            properties:
+              code:
+                type: string
+                description: >
+                  Error code:
+                    * INVALID_THUMBNAIL - Invalid image file provided
+                enum:
+                  - INVALID_THUMBNAIL
+              message:
+                type: string
+                description: "Error message"
+                example: "Error message"
+        401:
+          description: Unauthorized (No valid session)
+        403:
+          description: Access denied
+        404:
+          description: Not found
+        200:
+          description: Success
+          schema:
+            properties:
+              url:
+                type: string
+                description: "New thumbnail URL"
+                example: "/assets/b/0/0/thumbnail.jpg"
                     
   "/api/albums/{id}/delete":
     post:
