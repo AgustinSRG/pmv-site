@@ -91,6 +91,14 @@ In order to rename the album, click in the `pencil` button in the album options.
 
 ![Screenshot]({{< baseurl >}}images/en/album-rename.jpg)
 
+## Changing thumbnail
+
+In order to change the thumbnail of an album, click the `image` button in the album options.
+
+![Screenshot]({{< baseurl >}}images/en/album-change-thumbnail.jpg)
+
+By default, the album will use as its thumbnail, the thumbnail of the first element.
+
 ## Deleting
 
 In order to delete the album, click in the `trash` button in the album options.
