@@ -44,7 +44,7 @@ The top bar buttons are the following, from left to right:
 
  - The question mark button will display the help menu, letting you know the current version of your PersonalMediaVault instance or giving your information about the documentation or the keyboard shortcuts.
  - The cog button will display the vault settings menu. We'll explain this menu in details in the next section of this tutorial.
- - The log out button will display a confirmation modal asking you to close the vault session and lock the vault.
+ - The user with cog button will display the account settings menu. We'll explain this menu in details in the next section of this tutorial.
 
 ## Vault settings menu
 
@@ -69,42 +69,6 @@ By default, PersonalMediaVault will detect your browser language.
 By selecting your preferred language, PersonalMediaVault will save that preference in the local storage of your browser. In order to remember it in future sessions.
 
 > Isn't your language yet supported? Feel free to contribute with a [pull request](https://github.com/AgustinSRG/PersonalMediaVault/pulls) to add a new language. In order to add a new language, check the [frontend/src/locales](https://github.com/AgustinSRG/PersonalMediaVault/tree/master/frontend/src/locales) folder. Copy `locale-en.json` and translate every key to your language.
-
-### Change username
-
-Click in the **Change username** option in order to change your username. This is the username you use to unlock the vault.
-
-In order to change it, you must also provide your current password.
-
-![Screenshot]({{< baseurl >}}images/en/change-username.jpg)
-
-### Change password
-
-Click in the **Change password** option in order to change your password. This is the password you use to unlock the vault.
-
-In order to change it, you must also provide your current password.
-
-Make sure to use a very strong password, using letters (uppercase and lowercase), numbers and symbols. 
-
-Is it recommended to use a password manager, and making a backup of your password. If you lose your password, it will be impossible to recover the vault content, since it's encrypted with that password.
-
-![Screenshot]({{< baseurl >}}images/en/change-password.jpg)
-
-### Invite
-
-Click in the **Invite** option in order to invite users or devices to access the vault.
-
-This feature will allow you to generate single-use codes that can be used to access the vault in read-only mode.
-
-![Screenshot]({{< baseurl >}}images/en/invite-code-modal.jpg)
-
-### Administrate accounts
-
-The **Administrate accounts** option will show you a list of extra accounts for your vault, allowing you to create new ones or delete existing ones.
-
-This feature is useful when you have family or friend you want to share the vault with. You can make read-only accounts for them.
-
-If this use case does not fit your needs, you can just ignore this option.
 
 ### Tasks
 
@@ -150,3 +114,61 @@ You can apply any of the following operations:
 This can be useful if you want to make a change to many media assets, saving you time.
 
 ![Screenshot]({{< baseurl >}}images/en/batch-operation.jpg)
+
+### Clear browser data
+
+The **Clear browser data** option will let you clear the data stored in the browser by PersonalMediaVault.
+
+This data is stored for convenience, in order to remember thing like your favorites list, the time you left a media playing at, or the preferences you set (theme, language, sizes, etc.).
+
+You can clear this data in order to reset to the default values or to remove any track of your usage.
+
+![Screenshot]({{< baseurl >}}images/en/clear-browser-data.jpg)
+
+## Account settings menu
+
+The account settings menu has all the options you need to manage the vault account.
+
+![Screenshot]({{< baseurl >}}images/en/account-settings.jpg)
+
+### Change username
+
+Click in the **Change username** option in order to change your username. This is the username you use to unlock the vault.
+
+In order to change it, you must also provide your current password.
+
+![Screenshot]({{< baseurl >}}images/en/change-username.jpg)
+
+### Change password
+
+Click in the **Change password** option in order to change your password. This is the password you use to unlock the vault.
+
+In order to change it, you must also provide your current password.
+
+Make sure to use a very strong password, using letters (uppercase and lowercase), numbers and symbols. 
+
+Is it recommended to use a password manager, and making a backup of your password. If you lose your password, it will be impossible to recover the vault content, since it's encrypted with that password.
+
+![Screenshot]({{< baseurl >}}images/en/change-password.jpg)
+
+### Invite
+
+Click in the **Invite** option in order to invite users or devices to access the vault.
+
+This feature will allow you to generate single-use codes that can be used to access the vault in read-only mode.
+
+![Screenshot]({{< baseurl >}}images/en/invite-code-modal.jpg)
+
+### Administrate accounts
+
+The **Administrate accounts** option will show you a list of extra accounts for your vault, allowing you to create new ones or delete existing ones.
+
+This feature is useful when you have family or friend you want to share the vault with. You can make read-only accounts for them.
+
+If this use case does not fit your needs, you can just ignore this option.
+
+### Close vault
+
+The **Close vault** option will close the current session, locking the vault and redirecting you to the login screen.
+
+Close the vault when you are not using it to prevent unwanted access.
