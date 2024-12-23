@@ -1121,12 +1121,17 @@ pmv-cli album <COMMAND>
 | --- | --- |
 | [list](#command-album-list) | List albums |
 | [get](#command-album-get) | Get album and prints it |
+| [download-thumbnail](#command-album-download-thumbnail) | Downloads the thumbnail of an album |
 | [create](#command-album-create) | Creates a new album |
 | [rename](#command-album-rename) | Renames an album |
+| [change-thumbnail](#command-album-change-thumbnail) | Changes the thumbnail of an album |
 | [delete](#command-album-delete) | Deletes album |
 | [add](#command-album-add) | Adds a media asset to an album |
 | [remove](#command-album-remove) | Removes a media asset from an album |
 | [set-position](#command-album-set-position) | Changes the position of a media asset inside al album |
+| [export](#command-album-export) | Exports an album, downloading everything (metadata + assets) into a folder |
+| [import](#command-album-import) | Imports an album, expecting a folder with the same format the export command uses |
+| [optimize-thumbnails](#command-album-optimize-thumbnails) | Optimizes thumbnails of albums, making the loading process faster |
 
 <ins>**Options:**</ins>
 
@@ -1178,6 +1183,30 @@ pmv-cli album get [OPTIONS] <ALBUM>
 | `-c, --csv` | CSV format |
 | `-h, --help` | Print help |
 
+### Command: album download-thumbnail
+
+Downloads the thumbnail of an album
+
+<ins>**Usage:**</ins>
+
+```
+pmv-cli album download-thumbnail [OPTIONS] <ALBUM>
+```
+
+<ins>**Arguments:**</ins>
+
+| Argument | Description |
+| --- | --- |
+| `<ALBUM>` | Album ID |
+
+<ins>**Options:**</ins>
+
+| Option | Description |
+| --- | --- |
+| `-o, --output <OUTPUT>` | Path to the file to download the asset into |
+| `-p, --print-link` | Prints the download link, instead of downloading to a file |
+| `-h, --help` | Print help |
+
 ### Command: album create
 
 Creates a new album
@@ -1216,6 +1245,29 @@ pmv-cli album rename <ALBUM> <NAME>
 | --- | --- |
 | `<ALBUM>` | Album ID |
 | `<NAME>` | Album name |
+
+<ins>**Options:**</ins>
+
+| Option | Description |
+| --- | --- |
+| `-h, --help` | Print help |
+
+### Command: album change-thumbnail
+
+Changes the thumbnail of an album
+
+<ins>**Usage:**</ins>
+
+```
+pmv-cli album change-thumbnail <ALBUM> <PATH>
+```
+
+<ins>**Arguments:**</ins>
+
+| Argument | Description |
+| --- | --- |
+| `<ALBUM>` | Album ID |
+| `<PATH>` | Path to the thumbnail file |
 
 <ins>**Options:**</ins>
 
@@ -1308,6 +1360,67 @@ pmv-cli album set-position <ALBUM> <MEDIA> <POSITION>
 | `<ALBUM>` | Album ID |
 | `<MEDIA>` | Media asset ID |
 | `<POSITION>` | New position for the media asset, starting at 1 |
+
+<ins>**Options:**</ins>
+
+| Option | Description |
+| --- | --- |
+| `-h, --help` | Print help |
+
+### Command: album export
+
+Exports an album, downloading everything (metadata + assets) into a folder
+
+<ins>**Usage:**</ins>
+
+```
+pmv-cli album export [OPTIONS] <ALBUM>
+```
+
+<ins>**Arguments:**</ins>
+
+| Argument | Description |
+| --- | --- |
+| `<ALBUM>` | Album ID |
+
+<ins>**Options:**</ins>
+
+| Option | Description |
+| --- | --- |
+| `-o, --output <OUTPUT>` | Path to the folder to download the files into |
+| `-h, --help` | Print help |
+
+### Command: album import
+
+Imports an album, expecting a folder with the same format the export command uses
+
+<ins>**Usage:**</ins>
+
+```
+pmv-cli album import <PATH>
+```
+
+<ins>**Arguments:**</ins>
+
+| Argument | Description |
+| --- | --- |
+| `<PATH>` | Path to the folder to import |
+
+<ins>**Options:**</ins>
+
+| Option | Description |
+| --- | --- |
+| `-h, --help` | Print help |
+
+### Command: album optimize-thumbnails
+
+Optimizes thumbnails of albums, making the loading process faster
+
+<ins>**Usage:**</ins>
+
+```
+pmv-cli album optimize-thumbnails
+```
 
 <ins>**Options:**</ins>
 
