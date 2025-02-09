@@ -12,7 +12,7 @@
     "_check:links": "echo IMPLEMENTATION PENDING for check-links; echo",
     "_hugo": "hugo --cleanDestinationDir",
     "_hugo-dev": "npm run _hugo -- -e dev -DFE",
-    "_serve": "npm run _hugo-dev -- --minify serve",
+    "_serve": "npm run _hugo-dev -- --minify --renderToMemory serve",
     "build:preview": "npm run _hugo-dev -- --minify --baseURL \"${DEPLOY_PRIME_URL:-/}\"",
     "build:production": "npm run _hugo -- --minify",
     "build:pages": "npm run _hugo -- --minify --config hugo-pages.toml",
