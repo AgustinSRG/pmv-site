@@ -102,6 +102,8 @@ When an audio has subtitles, you can select them at the player configuration men
 
 ![Screenshot]({{< baseurl >}}images/en/audio-player-subtitles.jpg)
 
+![Screenshot]({{< baseurl >}}images/en/audio-player-subtitles-style.jpg)
+
 ### Time slices
 
 You can split the audio in different slices by clicking the option in the context menu, or pressing the **N** key. This will open an editor where you can add time slices, specifying the start time, and a name.

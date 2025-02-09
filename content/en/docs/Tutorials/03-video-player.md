@@ -108,6 +108,8 @@ When a video has subtitles, you can select them at the player configuration menu
 
 ![Screenshot]({{< baseurl >}}images/en/video-player-subtitles.jpg)
 
+![Screenshot]({{< baseurl >}}images/en/video-player-subtitles-style.jpg)
+
 ### Audio tracks
 
 You can add extra audio tracks for the video in the **Audio Tracks** tab of the player editor. You can add them by uploading audio files, for example with `.mp3` extension.
