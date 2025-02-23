@@ -52,19 +52,19 @@ They are binary files, with the following structure:
 
 The system is flexible enough to allow multiple encryption algorithms. Currently, there are 2 supported ones:
 
-- `AES256_ZIP`: ID = `1`, Uses ZLIB ([RFC 1950](https://datatracker.ietf.org/doc/html/rfc1950)) to compress the data, and then uses AES with a key of 256 bits to encrypt the data, CBC as the mode of operation and an IV of 128 bits. This algorithm uses a header containing the following fields:
+- `AES256_ZIP`: ID = `1`, Uses ZLIB ([RFC 1950](https://datatracker.ietf.org/doc/html/rfc1950)) to compress the data, and then uses AES with a key of 256 bits to encrypt the data, CBC as the mode of operation and an IV of 128 bits. This algorithm uses a header of 20 bytes, containing the following fields:
 
 | Starting byte | Size (bytes) | Value name                | Description                                                        |
 | ------------- | ------------ | ------------------------- | ------------------------------------------------------------------ |
-| `2 + H`       | `4`          | Compressed plaintext size | Size of the compressed plaintext, in bytes, used to remove padding |
-| `2 + H + 4`   | `16`         | IV                        | Initialization vector for AES_256_CBC algorithm                    |
+| `0`           | `4`          | Compressed plaintext size | Size of the compressed plaintext, in bytes, used to remove padding |
+| `4`           | `16`         | IV                        | Initialization vector for AES_256_CBC algorithm                    |
 
-- `AES256_FLAT`: ID = `2`, Uses AES with a key of 256 bits to encrypt the data, CBC as the mode of operation and an IV of 128 bits. This algorithm uses a header containing the following fields:
+- `AES256_FLAT`: ID = `2`, Uses AES with a key of 256 bits to encrypt the data, CBC as the mode of operation and an IV of 128 bits. This algorithm uses a header of 20 bytes, containing the following fields:
 
 | Starting byte | Size (bytes) | Value name     | Description                                             |
 | ------------- | ------------ | -------------- | ------------------------------------------------------- |
-| `2 + H`       | `4`          | Plaintext size | Size of the plaintext, in bytes, used to remove padding |
-| `2 + H + 4`   | `16`         | IV             | Initialization vector for AES_256_CBC algorithm         |
+| `0`           | `4`          | Plaintext size | Size of the plaintext, in bytes, used to remove padding |
+| `4`           | `16`         | IV             | Initialization vector for AES_256_CBC algorithm         |
 
 ### Index files
 
