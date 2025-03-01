@@ -8,7 +8,30 @@ tags: [guides, installation, linux]
 
 This guide explains how to download and install PersonalMediaVault on a Linux system, using the provided DEB package.
 
-## Download
+You can do it via 2 methods:
+
+ - The GitHub sites PPA repository (provides automatic updates)
+ - Manually download and installing the DEB package.
+
+## Install via the PPA repository
+
+Run the following commands to install PersonalMediaVault from the PPA:
+
+```sh
+# Download the public key
+curl -s --compressed "https://agustinsrg.github.io/PersonalMediaVault/KEY.gpg" | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/pmv.gpg >/dev/null
+
+# Add the APT list file
+sudo curl -s --compressed -o /etc/apt/sources.list.d/pmv.list "https://agustinsrg.github.io/PersonalMediaVault/pmv.list"
+
+# Update APT lists
+sudo apt update
+
+# Install the package
+sudo apt install personalmediavault
+```
+
+## Manual download and installation
 
 First, download the [pre-compiled DEB package](https://github.com/AgustinSRG/PersonalMediaVault#linux-with-deb-package-support) from any of the available mirrors.
 
@@ -21,8 +44,6 @@ sha256sum ./personalmediavault_A.B-C.deb
 ```
 
 The hash should perfectly match with the provided one. It is doesn't, do not continue the installation process, and make an [Issue](https://github.com/AgustinSRG/PersonalMediaVault/issues) to report the problem.
-
-## Installing
 
 Once downloaded, you can install the DEB package into your system with `apt`:
 
