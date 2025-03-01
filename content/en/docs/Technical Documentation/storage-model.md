@@ -348,7 +348,7 @@ func ComputePasswordHash(password string, salt []byte) []byte {
 }
 ```
 
-The vault ket is encrypted using the AES256 algorithm, using the system defined in the [Encrypted JSON files](#encrypted-json-files) section. Specifically using the `AES256_FLAT` mode.
+The vault key is encrypted using the AES256 algorithm, using the system defined in the [Encrypted JSON files](#encrypted-json-files) section. Specifically using the `AES256_FLAT` mode.
 
 The key for the encryption is calculated by hashing with SHA256 the the binary concatenation of the password (as UTF-8) and the random salt:
 
