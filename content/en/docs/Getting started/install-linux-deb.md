@@ -40,7 +40,7 @@ The file should have a name formatted similar to `personalmediavault_A.B-C.deb`,
 Make sure to check the file hash with the `sha256sum` utility and compare it to the provided hash on GitHub.
 
 ```sh
-sha256sum ./personalmediavault_A.B-C.deb
+sha256sum ./personalmediavault_A.B.C.deb
 ```
 
 The hash should perfectly match with the provided one. It is doesn't, do not continue the installation process, and make an [Issue](https://github.com/AgustinSRG/PersonalMediaVault/issues) to report the problem.
@@ -48,7 +48,7 @@ The hash should perfectly match with the provided one. It is doesn't, do not con
 Once downloaded, you can install the DEB package into your system with `apt`:
 
 ```sh
-sudo apt install ./personalmediavault_A.B-C.deb
+sudo apt install ./personalmediavault_A.B.C.deb
 ```
 
 The installation will also install [FFmpeg](https://ffmpeg.org/) as a dependency.
