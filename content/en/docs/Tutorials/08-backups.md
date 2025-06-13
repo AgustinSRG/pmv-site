@@ -34,18 +34,35 @@ In case the destination path is not empty, it will only copy the new files and u
 You can also use the backup tool from the terminal, running the `pmv-backup` binary:
 
 ```sh
-pmv-backup /path/to/vault /path/to/backup/folder
+pmv-backup backup /path/to/vault /path/to/backup/folder
 ```
 
 ## Re-encrypting
 
 In case you got the encryption key leaked, and it's no longer secure, you can make a backup re-encrypting everything with a brand new randomly generated encryption key. 
 
-In order to do that, use the `--re-encrypt` option:
+In order to do that, use the `re-encrypt` option:
 
 ```sh
-pmv-backup /path/to/vault /path/to/backup/folder --re-encrypt
+pmv-backup re-encrypt /path/to/vault /path/to/backup/folder
 ```
 
 Note: The re-encryption process may take a very long time. Make sure to always use a secure password in order to prevent data leaks in the first place.
 
+## Key recovery
+
+Since restoring backup can take a long time, you may want a method to recover access to your vaulty fast in case you lose access to your credentials.
+
+You can use the `key-export` option of the backup tool in order to export the vault encryption key:
+
+```sh
+pmv-backup key-export /path/to/vault
+```
+
+Make sure to back it up in a secure and private place.
+
+In case you lose access to your vault, and want to recover the key, you can use the `key-recover` option of the backup tool:
+
+```sh
+pmv-backup key-recover /path/to/vault
+```
