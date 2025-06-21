@@ -151,6 +151,17 @@ Is it recommended to use a password manager, and making a backup of your passwor
 
 ![Screenshot]({{< baseurl >}}images/en/change-password.jpg)
 
+### Account security
+
+Click in the **Account security** option in order to change the security settings of your account.
+
+You can configure the following settings:
+
+ - Two factor authentication
+ - Authentication confirmation (Require confirmation for certain dangerous operations). You can also set if you want to use your password, or a two factor authentication code. You can also configure a period to prevent asking for confirmation too often.
+
+![Screenshot]({{< baseurl >}}images/en/account-security.jpg)
+
 ### Invite
 
 Click in the **Invite** option in order to invite users or devices to access the vault.
