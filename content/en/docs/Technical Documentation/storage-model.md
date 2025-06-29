@@ -143,18 +143,21 @@ This format is useful to store video previews, without the need to use too many 
 
 Media vaults are stored in folders. A vault folder may contain the following files and folders:
 
-| Name                                               | Path               | Type                                             | Description                                                                                                                                                                   |
-| -------------------------------------------------- | ------------------ | ------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [**Media assets**](#media-assets-folder)           | `media`            | Folder                                           | Folder where media assets are stored.                                                                                                                                         |
-| [**Tag indexes**](#tag-indexes-folder)             | `tags`             | Folder                                           | Folder where tag indexes are stored.                                                                                                                                          |
-| [**Lock file**](#lock-file)                        | `vault.lock`       | [Lock file](#lock-file)                          | File used to prevent multiple instances of the PersonalMediaVault backend to access a vault at the same time. It may not be present, in case the vault is not being accessed. |
-| [**Credentials file**](#credentials-file)          | `credentials.json` | [Unencrypted JSON file](#unencrypted-json-files) | File to store the existing accounts, along with the hashed credentials and the encrypted vault key, protected with the account password.                                      |
-| [**Media ID tracker**](#media-id-tracker)          | `media_ids.json`   | [Unencrypted JSON file](#unencrypted-json-files) | File to store the last used media asset ID.                                                                                                                                   |
-| [**Tasks tracker**](#tasks-tracker)                | `tasks.json`       | [Unencrypted JSON file](#unencrypted-json-files) | File used to store the last used task ID, along with the list of pending tasks.                                                                                               |
-| [**Albums**](#albums-file)                         | `albums.pmv`       | [Encrypted JSON file](#encrypted-json-files)     | File used to store the existing albums, including the metadata and the list of media assets included in them.                                                                 |
-| [**Tag list**](#tags-file)                         | `tag_list.pmv`     | [Encrypted JSON file](#encrypted-json-files)     | File to store the metadata of the existing vault tags                                                                                                                         |
-| [**User configuration**](#user-configuration-file) | `user_config.pmv`  | [Encrypted JSON file](#encrypted-json-files)     | File to store user configuration, like the vault title or the encoding parameters                                                                                             |
-| [**Main index**](#main-index-file)                 | `main.index`       | [Index file](#index-files)                       | File to index every single media asset existing in the vault.                                                                                                                 |
+| Name                                      | Path               | Type                                             | Description                                                                                                                                                                   |
+| ----------------------------------------- | ------------------ | ------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [**Media assets**](#media-assets-folder)  | `media`            | Folder                                           | Folder where media assets are stored.                                                                                                                                         |
+| [**Tag indexes**](#tag-indexes-folder)    | `tags`             | Folder                                           | Folder where tag indexes are stored.                                                                                                                                          |
+| [**Lock file**](#lock-file)               | `vault.lock`       | [Lock file](#lock-file)                          | File used to prevent multiple instances of the PersonalMediaVault backend to access a vault at the same time. It may not be present, in case the vault is not being accessed. |
+| [**Credentials file**](#credentials-file) | `credentials.json` | [Unencrypted JSON file](#unencrypted-json-files) | File to store the existing accounts, along with the hashed credentials and the encrypted vault key, protected with the account password.                                      |
+| [**Media ID tracker**](#media-id-tracker) | `media_ids.json`   | [Unencrypted JSON file](#unencrypted-json-files) | File to store the last used media asset ID.                                                                                                                                   |
+| [**Tasks tracker**](#tasks-tracker)       | `tasks.json`       | [Unencrypted JSON file](#unencrypted-json-files) | File used to store the last used task ID, along with the list of pending tasks.                                                                                               |
+| [**Albums**](#albums-file)                | `albums.pmv`       | [Encrypted JSON file](#encrypted-json-files)     | File used to store the existing albums, including the metadata and the list of media assets included in them.                                                                 |
+
+|
+| [**Tag list**](#tags-file) | `tag_list.pmv` | [Encrypted JSON file](#encrypted-json-files) | File to store the metadata of the existing vault tags |
+| [**User configuration**](#user-configuration-file) | `user_config.pmv` | [Encrypted JSON file](#encrypted-json-files) | File to store user configuration, like the vault title or the encoding parameters |
+| [**UseHome pager configuration**](#home-page-configuration-file) | `home_page.pmv` | [Encrypted JSON file](#encrypted-json-files) | File to store the custom home page configuration |
+| [**Main index**](#main-index-file) | `main.index` | [Index file](#index-files) | File to index every single media asset existing in the vault. |
 
 ### Media assets folder
 
@@ -293,13 +296,15 @@ import (
 )
 
 func GetTagIndexPath(vault_path string, tag_id uint64) string {
-    return path.Join(vault_path, "tags", "tag_"+fmt.Sprint(tag_id)+".index")
+	return path.Join(vault_path, "tags", "tag_"+fmt.Sprint(tag_id)+".index")
 }
 ```
 
 Each tag index file contains the list of media asset identifiers that have such tag.
 
 ### Credentials file
+
+<!--- cSpell:ignore pwhash, enckey --->
 
 The credentials file, named `credentials.json` is an [unencrypted JSON file](#unencrypted-json-files) used to store the hashed credentials, along with the encrypted vault key.
 
@@ -330,13 +335,13 @@ Each `Account` is an object with the following fields:
 | `salt`                     | String                           | Hashing salt. Base 64 encoded                                                                  |
 | `enckey`                   | String                           | Encrypted key. Base 64 encoded                                                                 |
 | `method`                   | String                           | Name of the hashing + encryption method used                                                   |
+| `write`                    | Boolean                          | True if the account has permission to modify the vault                                         |
 | `tfa`                      | Boolean                          | True if two factor authentication is enabled                                                   |
 | `tfa_method`               | String                           | If two factor authentication is enabled, the method (eg: `totp:sha1:60:1`)                     |
 | `tfa_enckey`               | String                           | Encrypted two factor authentication key. Base 64 encoded                                       |
 | `auth_confirmation`        | Boolean                          | True if the authentication confirmation is enabled                                             |
 | `auth_confirmation_method` | String                           | Authentication confirmation method (`tfa` or `pw`)                                             |
 | `auth_confirmation_period` | Number (32 bit unsigned integer) | Period (seconds) to prevent asking for authentication confirmation multiple consecutive times. |
-| `write`                    | Boolean                          | True if the account has permission to modify the vault                                         |
 
 Currently, the following methods are implemented:
 
@@ -354,9 +359,9 @@ import (
 )
 
 func ComputePasswordHash(password string, salt []byte) []byte {
-    firstHash := sha256.Sum256(append([]byte(password), salt...))
-    secondHash := sha256.Sum256(firstHash[:])
-    return secondHash[:]
+	firstHash := sha256.Sum256(append([]byte(password), salt...))
+	secondHash := sha256.Sum256(firstHash[:])
+	return secondHash[:]
 }
 ```
 
@@ -370,8 +375,8 @@ import (
 )
 
 func ComputeAESEncryptionKey(password string, salt []byte) []byte {
-    passwordHash := sha256.Sum256(append([]byte(password), salt...))
-    return passwordHash[:]
+	passwordHash := sha256.Sum256(append([]byte(password), salt...))
+	return passwordHash[:]
 }
 ```
 
@@ -453,12 +458,15 @@ The file has the following fields:
 | Field name                | Type                         | Description                                                 |
 | ------------------------- | ---------------------------- | ----------------------------------------------------------- |
 | `title`                   | String                       | Vault custom title                                          |
+| `logo`                    | String                       | Vault custom logo text                                      |
 | `css`                     | String                       | Custom CSS for the frontend                                 |
 | `max_tasks`               | Number (32 bit integer)      | Max number of tasks to run in parallel                      |
 | `encoding_threads`        | Number (32 bit integer)      | Max number of threads to use for a single encoding task     |
 | `video_previews_interval` | Number (32 bit integer)      | Video previews interval (seconds)                           |
 | `resolutions`             | Array&lt;VideoResolution&gt; | Resolutions to automatically encode when uploading a video  |
 | `image_resolutions`       | Array&lt;ImageResolution&gt; | Resolutions to automatically encode when uploading an image |
+| `invite_limit`            | Number (32 bit integer)      | Max number of invites per user                              |
+| `preserve_originals`      | Boolean                      | Preserve original media before encoding?                    |
 
 The `VideoResolution` object has the following fields:
 
@@ -474,6 +482,33 @@ The `ImageResolution` object has the following fields:
 | ---------- | -------------------------------- | ---------------- |
 | `width`    | Number (32 bit unsigned integer) | Width in pixels  |
 | `height`   | Number (32 bit unsigned integer) | Height in pixels |
+
+### Home page configuration file
+
+The user configuration file, named `home_page.pmv` is an [encrypted JSON file](#encrypted-json-files) used to store the home page configuration for the vault.
+
+The file has the following fields:
+
+| Field name | Type                             | Description                                         |
+| ---------- | -------------------------------- | --------------------------------------------------- |
+| `groups`   | Array&lt;HomePageGroup&gt;       | Groups of elements to display in the home page.     |
+| `next_id`  | Number (64 bit unsigned integer) | ID to assign to the next group created by the user. |
+
+The `HomePageGroup` object has the following fields:
+
+| Field name | Type                             | Description                                                                   |
+| ---------- | -------------------------------- | ----------------------------------------------------------------------------- |
+| `id`       | Number (64 bit unsigned integer) | ID of the group to uniquely identity it.                                      |
+| `type`     | Number (8 bit unsigned integer)  | Type of group (`0` = custom/default, `1` = recent media, `2` = recent albums) |
+| `name`     | String                           | Name for the group, in order to display it to the user.                       |
+| `elements` | Array&lt;HomePageElement&gt;     | List of ordered elements to display for the group. Only for `type` = `0`      |
+
+The `HomePageElement` object has the following fields:
+
+| Field name | Type                             | Description                                        |
+| ---------- | -------------------------------- | -------------------------------------------------- |
+| `t`        | Number (8 bit unsigned integer)  | Type of element (`0` = media/default, `1` = album) |
+| `i`        | Number (64 bit unsigned integer) | Identifier of the media or the album               |
 
 ### Main index file
 
