@@ -9,9 +9,21 @@ weight: 6
 
 ## Home page
 
-When you unlock the vault, the first page you see is the **Home** page, which consists on a paginated gallery containing all the media files you stored in your vault.
+When you unlock the vault, the first page you will see is the **Home** page.
+
+By default, the home page will show you the most recent media element you added to the vault, along with the most recently updated albums.
 
 ![Screenshot]({{< baseurl >}}images/en/home-page.jpg)
+
+This page is very customizable. Click in the **pencil** icon in order to add custom rows and create your own custom home page for your vault.
+
+![Screenshot]({{< baseurl >}}images/en/home-page-edit.jpg)
+
+## Media page
+
+The **Media** page consists on a paginated gallery containing all the media files you stored in your vault.
+
+![Screenshot]({{< baseurl >}}images/en/media-page.jpg)
 
 By default, it will show the most recent media files first. You can change this clicking on the arrow icon at the top-right, in order to show the oldest media files first.
 
@@ -28,19 +40,11 @@ You can also customize the page by clicking in the cog button at the top-right. 
 
 ![Screenshot]({{< baseurl >}}images/en/page-config-modal.jpg)
 
-## Random Results
-
-In case you want to load random media files from your media vault, you can try the **Random** page. This page works similar to the **Home** page, without the menu.
-
-Each time you reload, a new seed is used, giving you a new set of random results.
-
-![Screenshot]({{< baseurl >}}images/en/random-page.jpg)
-
 ## Fast search
 
 By typing in the search bar at the top, you can find any album or tag in the vault.
 
-When selecting a tag, it will filter by that tag, showing you a **Search results** page, identical to the **Home** page, but only showing the media files containing the tag.
+When selecting a tag, it will filter by that tag, showing you a filtered **Media** page, only showing the media files containing the tag.
 
 ![Screenshot]({{< baseurl >}}images/en/fast-search.jpg)
 
@@ -48,11 +52,11 @@ This filter also applies to the **Random** page, in order to get random, filtere
 
 You can clear the filter by clicking on the **X** button that appears in the search bar when there is an active filter.
 
-## Advanced search
+## Find media
 
-If you want a more advanced search system, in order to find a particular file in your vault, you can use the **Advanced search** page. This page will offer you a variety of options like:
+If you want a more advanced search system, in order to find a particular file in your vault, you can use the **Find media** page. This page will offer you a variety of options like:
 
- - Filtering by text in title or description
+ - Filtering by text in the title
  - Filtering by multiple tags
  - Filtering by media type (video, audio, picture)
  - Filtering by album
@@ -60,3 +64,11 @@ If you want a more advanced search system, in order to find a particular file in
 Once your filter is set, you can scroll down until you find what you're looking for.
 
 ![Screenshot]({{< baseurl >}}images/en/advanced-search.jpg)
+
+## Random Results
+
+In case you want to load random media files from your media vault, you can try the **Random** page. This page works similar to the **Media** page, without the menu.
+
+Each time you reload, a new seed is used, giving you a new set of random results.
+
+![Screenshot]({{< baseurl >}}images/en/random-page.jpg)

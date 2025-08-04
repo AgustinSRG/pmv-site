@@ -25,12 +25,12 @@ Let's get familiar with the interface elements!
 
 First, you have sidebar at the left. You can toggle its visibility with the button at the top left corner. The sidebar has the following elements:
 
- - The **Home** view, where you can access to all the media assets you have, in upload order.
- - The **Search results** view, only visible when you are filtering by a tag. Very similar to the **Home** view, but filtered.
+ - The **Home** page, where you can set up carrousels fo albums or media elements in order to access them in a more efficient and organized way.
  - The **Albums** view, when you can access every album existing in your vault.
- - The **Upload** view, where you can upload media files into your vault.
+ - The **Media** view, where you can find the media existing in your vault.
+ - The **Find media** view, where you can search for media files in your vault, by title, type, tags or album.
  - The **Random** view, witch gives you random media files existing in your vault.
- - The **Advanced search** view, where you can search for media files in your vault, by title, description, type, tags or album.
+ - The **Upload** view, where you can upload media files into your vault.
 
 Below the main options, a list of albums will be displayed, ordered by usage or preference.
 
