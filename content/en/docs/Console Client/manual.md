@@ -8,6 +8,8 @@ tags: [guides, console-cli, technical]
 
 This is the manual for the PersonalMediaVault console client.
 
+Command line interface client for PersonalMediaVault
+
 <ins>**Usage:**</ins>
 
 ```
@@ -30,6 +32,7 @@ pmv-cli [OPTIONS] <COMMAND>
 | [config](#command-config) | Manages vault configuration |
 | [task](#command-task) | Retrieves tasks information |
 | [invites](#command-invites) | Manages invites |
+| [home](#command-home) | Manges the home page |
 | [batch](#command-batch) | Applies a batch operation to a list of media assets |
 | [get-server-information](#command-get-server-information) | Gets server information, like the version it is using |
 | [get-disk-usage](#command-get-disk-usage) | Gets server disk usage |
@@ -373,12 +376,13 @@ pmv-cli media <COMMAND>
 | [get](#command-media-get) | Gets media asset metadata and download links |
 | [stats](#command-media-stats) | Gets media asset size stats |
 | [download](#command-media-download) | Downloads a media asset |
+| [get-related](#command-media-get-related) | Gets related media |
 | [export](#command-media-export) | Exports a media asset, downloading everything (metadata + assets) into a folder |
 | [upload](#command-media-upload) | Uploads a new media asset, waits for encryption and adds tags if specified |
 | [import](#command-media-import) | Imports a media asset, expecting a folder with the same format the export command uses |
 | [set-title](#command-media-set-title) | Changes the title of a media asset |
 | [set-description](#command-media-set-description) | Changes the description of a media asset |
-| [set-extended-description](#command-media-set-extended-description) | Changes the extended description of a media asset |
+| [set-related-media](#command-media-set-related-media) | Sets the related media list |
 | [set-force-start-beginning](#command-media-set-force-start-beginning) | Changes the forced start from beginning parameter of a media asset |
 | [set-is-animation](#command-media-set-is-animation) | Changes the is-animation parameter of a media asset |
 | [set-thumbnail](#command-media-set-thumbnail) | Sets the thumbnail of a media asset |
@@ -473,6 +477,30 @@ pmv-cli media download [OPTIONS] <MEDIA> [ASSET]
 | --- | --- |
 | `-o, --output <OUTPUT>` | Path to the file to download the asset into |
 | `-p, --print-link` | Prints the download link, instead of downloading to a file |
+| `-h, --help` | Print help |
+
+### Command: media get-related
+
+Gets related media
+
+<ins>**Usage:**</ins>
+
+```
+pmv-cli media get-related [OPTIONS] <MEDIA>
+```
+
+<ins>**Arguments:**</ins>
+
+| Argument | Description |
+| --- | --- |
+| `<MEDIA>` | Media asset ID |
+
+<ins>**Options:**</ins>
+
+| Option | Description |
+| --- | --- |
+| `-e, --extended` | Extended version of the results table |
+| `-c, --csv` | CSV format |
 | `-h, --help` | Print help |
 
 ### Command: media export
@@ -577,7 +605,7 @@ Changes the description of a media asset
 <ins>**Usage:**</ins>
 
 ```
-pmv-cli media set-description <MEDIA> <DESCRIPTION>
+pmv-cli media set-description <MEDIA> <PATH>
 ```
 
 <ins>**Arguments:**</ins>
@@ -585,7 +613,7 @@ pmv-cli media set-description <MEDIA> <DESCRIPTION>
 | Argument | Description |
 | --- | --- |
 | `<MEDIA>` | Media asset ID |
-| `<DESCRIPTION>` | Description |
+| `<PATH>` | Path to the text file containing the description |
 
 <ins>**Options:**</ins>
 
@@ -593,14 +621,14 @@ pmv-cli media set-description <MEDIA> <DESCRIPTION>
 | --- | --- |
 | `-h, --help` | Print help |
 
-### Command: media set-extended-description
+### Command: media set-related-media
 
-Changes the extended description of a media asset
+Sets the related media list
 
 <ins>**Usage:**</ins>
 
 ```
-pmv-cli media set-extended-description <MEDIA> <PATH>
+pmv-cli media set-related-media <MEDIA> <RELATED>
 ```
 
 <ins>**Arguments:**</ins>
@@ -608,7 +636,7 @@ pmv-cli media set-extended-description <MEDIA> <PATH>
 | Argument | Description |
 | --- | --- |
 | `<MEDIA>` | Media asset ID |
-| `<PATH>` | Path to the text file containing the extended description |
+| `<RELATED>` | List of related media IDs, separated by commas |
 
 <ins>**Options:**</ins>
 
@@ -1140,7 +1168,6 @@ pmv-cli advanced-search [OPTIONS]
 | Option | Description |
 | --- | --- |
 | `-q, --title <TITLE>` | Filter by title |
-| `-d, --description <DESCRIPTION>` | Filter by description |
 | `-k, --media-type <MEDIA_TYPE>` | Filter by media type. Can be: video, audio or image |
 | `-t, --tags <TAGS>` | Filter by tags. Expected a list of tag names, separated by spaces |
 | `-m, --tags-mode <TAGS_MODE>` | Tag filtering mode. Can be: all, any, none or untagged |
@@ -2104,6 +2131,188 @@ pmv-cli invites close-session <INDEX>
 | --- | --- |
 | `-h, --help` | Print help |
 
+## Command: home
+
+Manges the home page
+
+<ins>**Usage:**</ins>
+
+```
+pmv-cli home <COMMAND>
+```
+
+<ins>**Commands:**</ins>
+
+| Command | Description |
+| --- | --- |
+| [get-groups](#command-home-get-groups) | Gets the groups in the home page |
+| [add-group](#command-home-add-group) | Adds a home page group |
+| [get-group-elements](#command-home-get-group-elements) | Gets the elements of a group |
+| [set-group-elements](#command-home-set-group-elements) | Sets the elements of a group |
+| [rename-group](#command-home-rename-group) | Renames an existing group |
+| [move-group](#command-home-move-group) | Moves an existing group to another position |
+| [delete-group](#command-home-delete-group) | Deletes an existing group |
+
+<ins>**Options:**</ins>
+
+| Option | Description |
+| --- | --- |
+| `-h, --help` | Print help |
+
+### Command: home get-groups
+
+Gets the groups in the home page
+
+<ins>**Usage:**</ins>
+
+```
+pmv-cli home get-groups
+```
+
+<ins>**Options:**</ins>
+
+| Option | Description |
+| --- | --- |
+| `-h, --help` | Print help |
+
+### Command: home add-group
+
+Adds a home page group
+
+<ins>**Usage:**</ins>
+
+```
+pmv-cli home add-group [OPTIONS] <NAME> <GROUP_TYPE>
+```
+
+<ins>**Arguments:**</ins>
+
+| Argument | Description |
+| --- | --- |
+| `<NAME>` | A name for the group |
+| `<GROUP_TYPE>` | The type of group (CUSTOM, RECENT_MEDIA or RECENT_ALBUMS) |
+
+<ins>**Options:**</ins>
+
+| Option | Description |
+| --- | --- |
+| `--prepend` | Add this option in order to add the group at the top of the list |
+| `-h, --help` | Print help |
+
+### Command: home get-group-elements
+
+Gets the elements of a group
+
+<ins>**Usage:**</ins>
+
+```
+pmv-cli home get-group-elements [OPTIONS] <ID>
+```
+
+<ins>**Arguments:**</ins>
+
+| Argument | Description |
+| --- | --- |
+| `<ID>` | ID of the group |
+
+<ins>**Options:**</ins>
+
+| Option | Description |
+| --- | --- |
+| `--as-refs` | Add this option to print the elements as references |
+| `-h, --help` | Print help |
+
+### Command: home set-group-elements
+
+Sets the elements of a group
+
+<ins>**Usage:**</ins>
+
+```
+pmv-cli home set-group-elements <ID> <ELEMENTS>
+```
+
+<ins>**Arguments:**</ins>
+
+| Argument | Description |
+| --- | --- |
+| `<ID>` | ID of the group |
+| `<ELEMENTS>` | List of group elements, as references, separated by commas. For media elements use M{ID} and for albums use A{ID}. Example: A12, M6, M8 |
+
+<ins>**Options:**</ins>
+
+| Option | Description |
+| --- | --- |
+| `-h, --help` | Print help |
+
+### Command: home rename-group
+
+Renames an existing group
+
+<ins>**Usage:**</ins>
+
+```
+pmv-cli home rename-group <ID> <NAME>
+```
+
+<ins>**Arguments:**</ins>
+
+| Argument | Description |
+| --- | --- |
+| `<ID>` | ID of the group |
+| `<NAME>` | A name for the group |
+
+<ins>**Options:**</ins>
+
+| Option | Description |
+| --- | --- |
+| `-h, --help` | Print help |
+
+### Command: home move-group
+
+Moves an existing group to another position
+
+<ins>**Usage:**</ins>
+
+```
+pmv-cli home move-group <ID> <POSITION>
+```
+
+<ins>**Arguments:**</ins>
+
+| Argument | Description |
+| --- | --- |
+| `<ID>` | ID of the group |
+| `<POSITION>` | The position to move the group |
+
+<ins>**Options:**</ins>
+
+| Option | Description |
+| --- | --- |
+| `-h, --help` | Print help |
+
+### Command: home delete-group
+
+Deletes an existing group
+
+<ins>**Usage:**</ins>
+
+```
+pmv-cli home delete-group <ID>
+```
+
+<ins>**Arguments:**</ins>
+
+| Argument | Description |
+| --- | --- |
+| `<ID>` | ID of the group |
+
+<ins>**Options:**</ins>
+
+| Option | Description |
+| --- | --- |
+| `-h, --help` | Print help |
+
 ## Command: batch
 
 Applies a batch operation to a list of media assets
@@ -2129,7 +2338,6 @@ pmv-cli batch [OPTIONS] <COMMAND>
 | Option | Description |
 | --- | --- |
 | `-q, --title <TITLE>` | Filter by title |
-| `-d, --description <DESCRIPTION>` | Filter by description |
 | `-k, --media-type <MEDIA_TYPE>` | Filter by media type. Can be: video, audio or image |
 | `-t, --tags <TAGS>` | Filter by tags. Expected a list of tag names, separated by spaces |
 | `-m, --tags-mode <TAGS_MODE>` | Tag filtering mode. Can be: all, any, none or untagged |
