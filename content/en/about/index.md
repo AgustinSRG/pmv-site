@@ -6,7 +6,7 @@ menu: {main: {weight: 10}}
 
 {{% blocks/cover title="About PersonalMediaVault" image_anchor="bottom" height="auto" %}}
 
-Web application to store media files (video, audio and pictures) in an encrypted storage, and visualize them using a web browser.
+Self-hosted web application to store media files (video, audio and pictures) in an encrypted storage, and visualize them using a web browser.
 {.mt-5}
 
 {{% /blocks/cover %}}

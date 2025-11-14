@@ -15,6 +15,7 @@ You will need the following tools installed on your system to compile PersonalMe
  - [Git](https://git-scm.com/downloads)
  - [Golang](https://go.dev/), latest stable version
  - [NodeJS](https://nodejs.org/en), latest stable version
+ - [Rust](https://rust-lang.org/), latest stable version
 
 ## Install FFMpeg (Dependency)
 
@@ -62,7 +63,7 @@ cd ..
 
 The result will be a binary named `pmv-backup`. Copy it into `/usr/bin`
 
-## Compile launcher
+## Compile launcher (console version)
 
 Navigate to the `launcher` folder and run the compilation script:
 
@@ -73,6 +74,18 @@ cd ..
 ```
 
 The result will be a binary named `pmv`. Copy it into `/usr/bin`
+
+## Compile launcher (GUI version)
+
+Navigate to the `launcher-gui` folder and run the compilation script:
+
+```sh
+cd launcher-gui
+./build-production.sh
+cd ..
+```
+
+The result will be a binary named `pmv-gui`. Copy it into `/usr/bin`
 
 ## Compile frontend
 

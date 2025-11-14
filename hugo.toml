@@ -67,7 +67,7 @@ languageName ="English"
 weight = 1
 [languages.en.params]
 title = "Personal Media Vault"
-description = "Web application to store media files (video, audio and pictures) in an encrypted storage, and visualize them using a web browser."
+description = "Self-hosted web application to store media files (video, audio and pictures) in an encrypted storage, and visualize them using a web browser."
 
 [markup]
   [markup.goldmark]

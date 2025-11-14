@@ -9,7 +9,7 @@ title: PersonalMediaVault
 <a class="btn btn-lg btn-secondary me-3 mb-4" href="https://github.com/AgustinSRG/PersonalMediaVault/releases">
   Download <i class="fas fa-download ms-2 "></i>
 </a>
-<p class="lead mt-5">Web application to store media files (video, audio and pictures) in an encrypted storage, and visualize them using a web browser.</p>
+<p class="lead mt-5">Self-hosted web application to store media files (video, audio and pictures) in an encrypted storage, and visualize them using a web browser.</p>
 {{< blocks/link-down color="info" >}}
 {{< /blocks/cover >}}
 

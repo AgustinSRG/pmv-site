@@ -10,17 +10,11 @@ This guide explains how to download and install PersonalMediaVault on a Windows 
 
 ## Download
 
-Download the [MSI installation package](https://github.com/AgustinSRG/PersonalMediaVault#windows) from any of the available mirrors.
+Download the **MSI** installer (`PersonalMediaVault-{VERSION}-x64.msi`) from [Releases](https://github.com/AgustinSRG/PersonalMediaVault/releases).
 
 The file should have a name formatted similar to `PersonalMediaVault-A.B.C-x64.msi`, replacing `A`, `B` and `C` for the major, minor and patch version number respectively.
 
 Make sure to check the file hash with **Powershell** and compare it to the provided hash on GitHub.
-
-```ps1
-Get-FileHash -Path "PersonalMediaVault-A.B.C-x64.msi" -Algorithm SHA256
-```
-
-The hash should perfectly match with the provided one. It is doesn't, do not continue the installation process, and make an [Issue](https://github.com/AgustinSRG/PersonalMediaVault/issues) to report the problem.
 
 ## Installing
 
