@@ -13,6 +13,7 @@ In this section we explain how to download, install and run PersonalMediaVault f
 Running the vault in an isolated container is the most secure way of running it, gives access to all the features and allows for a fine-grained configuration:
 
  - [Run it with Docker](./docker/)
+ - [Run it with Docker (with AI features)](./docker-with-ai/)
 
 However, this may be a bit complex for non technical users. So, if you only need a local vault, go to the [Installation](#installation) section instead.
 

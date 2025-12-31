@@ -11,5 +11,9 @@
 			"node_modules/**": true,
 			".hugo_build.lock": true
 		},
+		"cSpell.words": [
+			"asanrom",
+			"qdrant"
+		],
 	}
 }
