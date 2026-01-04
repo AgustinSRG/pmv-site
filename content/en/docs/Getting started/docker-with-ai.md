@@ -180,7 +180,9 @@ VAULT_CACHE_SIZE=1024
 #
 #   --log-requests - Enables request logging
 #   --debug - Enables debug logging (useful for troubleshooting)
-
+#   --recover - Recovers non-indexed media assets.
+#   --check-trash - Checks the vault (at startup) in order to find trash files. This option requires the vault credentials passed in the environment variables 'VAULT_USER' and 'VAULT_PASSWORD', in order to decrypt the vault files.
+#   --remove-trash - Removes the trash files. Combine this option with '--check-trash'.
 VAULT_EXTRA_OPTIONS=--log-requests
 
 # Qdrant log level
