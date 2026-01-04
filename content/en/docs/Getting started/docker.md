@@ -115,7 +115,6 @@ VAULT_CACHE_SIZE=1024
 #
 #   --log-requests - Enables request logging
 #   --debug - Enables debug logging (useful for troubleshooting)
-#   --fix-consistency - Fixes vault consistency at startup (takes some time)
 #   --recover - Recovers non-indexed media assets.
 
 VAULT_EXTRA_OPTIONS=--log-requests
