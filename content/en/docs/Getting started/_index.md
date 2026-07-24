@@ -13,7 +13,6 @@ In this section we explain how to download, install and run PersonalMediaVault f
 Running the vault in an isolated container is the most secure way of running it, gives access to all the features and allows for a fine-grained configuration:
 
  - [Run it with Docker](./docker/)
- - [Run it with Docker (with AI features)](./docker-with-ai/)
 
 However, this may be a bit complex for non technical users. So, if you only need a local vault, go to the [Installation](#installation) section instead.
 
@@ -27,6 +26,14 @@ Depending on your operating system, we offer you the following installation guid
  - [Installation on Windows](./install-windows/)
 
 The installation guides also explain how to create a vault and run it in your system.
+
+## Enabling semantic search
+
+PersonalMediaVault has an optional semantic search feature.
+
+In order to enable it you need to download an embeddings model, usually very heavy. That is why it does not come by default on the installation.
+
+If you are interested, check the [Enabling semantic search](./enabling-semantic-search.md) section.
 
 ## Compilation from source code
 
